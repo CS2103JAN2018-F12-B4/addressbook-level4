@@ -178,6 +178,8 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         assertCommandFailure(command, Email.MESSAGE_EMAIL_CONSTRAINTS);
 
         /* Case: invalid address -> rejected */
+        // Fails when prefixes are changed
+        // wrong error message: gives generic wrong command format message instead of specific address constraint msg.
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + INVALID_ADDRESS_DESC;
         assertCommandFailure(command, Address.MESSAGE_ADDRESS_CONSTRAINTS);
 
