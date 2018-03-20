@@ -17,7 +17,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     }
 
     @Override
-    //test existence of keywords in person's full name and tags.
+    //test existence of keywords in person's full name, address and tags.
     public boolean test(Person person) {
 
         String stringOfTags = getStringOfTags(person);
@@ -27,7 +27,11 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 || keywords.stream()
                     .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(stringOfTags, keyword))
                 || keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getAddress().value, keyword));
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getAddress().value, keyword))
+                || keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getEmail().value, keyword))
+                || keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getPhone().value, keyword));
     }
 
     private String getStringOfTags(Person person) {
