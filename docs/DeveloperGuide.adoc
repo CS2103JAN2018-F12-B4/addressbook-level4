@@ -799,8 +799,7 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 ~Zhang Rui Qi~
 
-Major: Implementation of `Locate` command to bring up address of target on
-Google Maps.
+Major: Implementation of `Locate` command to bring up address of target on Google Maps.
 
 Minor: Addition of command aliases to improve speed of using CLI
 
