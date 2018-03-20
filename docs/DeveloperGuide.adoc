@@ -782,13 +782,47 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Target user profile*:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing over mouse input
-* is reasonably comfortable using CLI apps
+* Loan Shark Bosses
+* Need to manage a significant number of contacts (customers and runners).
+* Prefer desktop apps over other types since he will be operating the syndicate from his den / headquarters and not out in the field.
+* Can type fast as he is tech-savvy and is comfortable with using technology to manage data and streamline his workflow.
+* Prefer typing over mouse mouse input as he has fast fingers.
+* Is reasonable comfortable using CLI apps.
 
-*Value proposition*: manage contacts faster than a typical mouse/GUI driven app
+*Value proposition*:
+
+* Manage the operations of the loan shark syndicate substantially more efficiently and quickly than a typical mouse / GUI-driven app.
+* Untapped market potential.
+* Integrated with map, calendar and calculator functionality to centralise and optimise management tasks for the syndicate.
+
+*Feature Contribution:*
+
+~Zhang Rui Qi~
+
+Major: Implementation of `Locate` command to bring up address of target on
+Google Maps.
+
+Minor: Addition of command aliases to improve speed of using CLI
+
+
+~Melvin Tan~
+
+Major: Integration with Google Calendar
+
+Minor: Enhancement to `Find` command to improve searching
+
+~Jonathan Lee~
+
+Major: Natural language processing for commands
+
+Minor: UI update - colours and layout
+
+~Choi Wi Su~
+
+Major: Import and export function to update contacts and export information to other formats
+
+Minor: Addition of remarks field for each contact
+
 
 [appendix]
 == User Stories
@@ -798,17 +832,69 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
-|`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
+|`* * *` |new user |view help information |find out how to use the application
 
-|`* * *` |user |add a new person |
+|`* * *` |user |list all my customers |have an overview of all customers
 
-|`* * *` |user |delete a person |remove entries that I no longer need
+|`* * *` |user |add a new customer |store the data of a new customer as well as related deals and contracts
+
+|`* * *` |user |clear the list of customers |start on a clean state
+
+|`* * *` |user |delete a customer |remove unwanted data
+
+|`* * *` |user |edit a customer's data |correct mistakes or update the data with the latest information
+
+|`* * *` |user |exit the application |call it a day
+
+|`* * *` |user |find a customer with a keyword and specify which data field to search |search up a customer quickly without looking at the whole list
+
+|`* * *` |user |view history of previously entered commands |trace my workflow
+
+|`* * *` |user |undo a command |easily revert to a previous state
+
+|`* * *` |user |redo a command |redo a command that was undone
+
+|`* * *` |user |select a person from the previously retrieved list |view more details about the particular customer
+
+|`* * *` |user |view a customer's address on Google Maps |visualize the location of the customer
+
+|`* * *` |user |back up my list |create backup copies of the current data in case of data corruption
+
+|`* * *` |user |list all my runners |get an overview of all subordinates
+
+|`* * *` |user |schedule collection of payment |plan  meetings with customers and facilitate timely collection of payments
+
+|`* * *` |user |schedule a house visit |send a friendly, personal reminder to a customer regarding payments
+
+|`* * *` |user |add a customer with partial information |add a customer entry without requiring all the details
+
+|`* * *` |user |easily make ad hoc calculations |perform simple payment calculations without disrupting my workflow
+
+|`* * *` |user |view customer or transaction statistics |make informed decisions or get relevant information about customers or transactions
+
+|`* * *` |user |rate my customers |know who the most reliable customers are
+
+|`* * *` |user |filter customers by area |make operations, collections and visitations more time and cost efficient
+
+|`* * *` |user |hide my application quickly |prevent unwanted eyes from confidential data and the activities of the syndicate
+
+|`* * *` |user |view information about a customer's collateral (family members, relatives, property)  |nalyse possible courses of action against recalcitrant customers who do not pay up
+
+|`* * *` |user |view a compact status view of customers using small symbols or pictorial representations |see general status information about customers at a glance
+
+|`* * *` |user |view different configurations of one or more routes, all together encompassing a given set of customers' locations |find the optimal route in terms of cost, time and effort that can be taken to collect from a given set of customers
 
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
-|`* *` |user |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
+|`* *` |user |export data of customers and runners |view the data in another format or on another platform
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`* *` |user |view a route encompassing a given set of customers' locations |access the cost, time and effort involved in collecting from a set of customers
+
+|`**` |user | enter commands with aliases | type commands faster and improve speed of using the application
+
+|`*` |user |export my current view to another format |view specific information in another format or print out a hardcopy and pass the information to subordinates
+
+
 |=======================================================================
 
 _{More to be added}_
@@ -867,9 +953,9 @@ A contact detail that is not meant to be shared with others
 [appendix]
 == Product Survey
 
-*Product Name*
+*LoanShark Tycoon*
 
-Author: ...
+Author:
 
 Pros:
 

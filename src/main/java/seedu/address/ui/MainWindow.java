@@ -27,6 +27,8 @@ import seedu.address.model.UserPrefs;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+    private static BrowserPanel browserPanel = new BrowserPanel();
+
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -34,7 +36,6 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
     private Config config;
     private UserPrefs prefs;
@@ -193,5 +194,9 @@ public class MainWindow extends UiPart<Stage> {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    public static void loadUrl(String url) {
+        browserPanel.loadPage(url);
     }
 }

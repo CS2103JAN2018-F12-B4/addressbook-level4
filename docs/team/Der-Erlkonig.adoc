@@ -1,8 +1,8 @@
-= John Doe - Project Portfolio
+= Choi Wi Su - Project Portfolio
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
-== PROJECT: AddressBook - Level 4
+== PROJECT: LoanShark Manager
 
 ---
 
