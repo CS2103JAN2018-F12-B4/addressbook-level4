@@ -14,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
+import seedu.address.commons.events.ui.LocateRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.model.person.Person;
 
@@ -61,12 +62,26 @@ public class PersonListPanel extends UiPart<Region> {
         });
     }
 
+    /**
+     * Scrolls to the {@code PersonCard} at the {@code index} and display the location on Google Map.
+     * @param event
+     */
+    private void locate(int index) {
+        Platform.runLater(()-> {
+            personListView.scrollTo(index);
+        });
+    }
     @Subscribe
     private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         scrollTo(event.targetIndex);
     }
 
+    @Subscribe
+    private void handleLocateRequestEvent(LocateRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        locate(event.targetInex);
+    }
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
      */
