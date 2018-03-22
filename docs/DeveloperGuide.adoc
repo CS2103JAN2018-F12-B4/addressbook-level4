@@ -385,6 +385,110 @@ We are using `java.util.logging` package for logging. The `LogsCenter` class is 
 
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file (default: `config.json`).
 
+=== Find Command Enhancements
+
+In the original AddressBook, the `find` command only searches through the `Name` field of the `Person`. The current implementation enables the user to search through all fields in a Person. This is bound to be useful when the user may be interested in quickly finding someone whose address or tags contains a certain word. Furthermore, the current implementation allows the user to enter certain specifier parameters to narrow down the search range, which allows more relevant results to appear to the user.
+
+==== Basic Enhancement
+
+Most of the useful work done in the Find Command is done by constructing a `FindCommand` object and passing an appropriate `Predicate<>` as a parameter to it.
+
+----
+public FindCommand(Predicate<Person> predicate) {
+        this.predicate = predicate;
+    }
+
+    @Override
+    public CommandResult execute() {
+        model.updateFilteredPersonList(predicate);
+        return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
+    }
+----
+
+In this case, the `FindCommand` object expects a `Predicate<Person>` as an argument, and then uses that Predicate object in `execute()` to filter the list in the `Model`.
+
+All that is needed now is to create an appropriate `Predicate<Person>` class that checks the correct fields in a `Person` instance.
+
+For example, in a `PersonContainsKeywordsPredicate`, the test field is overridden as such:
+
+----
+public boolean test(Person person) {
+
+        String stringOfTags = getStringOfTags(person);
+
+        return keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
+                || keywords.stream()
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(stringOfTags, keyword))
+                || keywords.stream()
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getAddress().value, keyword))
+                || keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getEmail().value, keyword))
+                || keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getPhone().value, keyword));
+    }
+----
+
+a `stream` is generated from the user-entered keywords and each keyword is checked against all the words in specific fields such as `person.getName().fullName`.
+
+==== Further Enhancement
+
+The `find` command accepts a specifier, such as `-t` or `-p` as the first argument to the program to search through a specific field. `FindCommandParser` then recognises the specifers and constructs the correct `FindCommand` object with the correct `Predicate<Person>`. `FindCommand.execute()` is then called, and it searches for the keywords in the correct fields according to the Predicate that was passed to it.
+
+These are the names of the `Predicate<Person>` classes currently implemented:
+
+** PersonContainsKeywordsPredicate
+** NameContainsKeywordsPredicate
+** AddressContainsKeywordsPredicate
+** EmailContainsKeywordsPredicate
+** PhoneContainsKeywordsPredicate
+** TagsContainsKeywordsPredicate
+
+In order to implement this further enhancement, we have to modify `FindCommandParser` to recognize the specifier and then to construct the correct `FindCommand` object. The code is shown below.
+
+----
+ String[] arguments = trimmedArgs.split("\\s+");
+        String[] keywords;
+        //check arguments[0] for specifier
+
+        if (arguments[0].matches("\\p{Alnum}+.++")) {
+            return new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList(arguments)));
+        }
+
+        switch (arguments[0]) {
+        case "-all":
+            keywords = Arrays.copyOfRange(arguments, 1, arguments.length);
+            return new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList(keywords)));
+        case "-n":
+            keywords = Arrays.copyOfRange(arguments, 1, arguments.length);
+            return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
+        case "-p":
+            keywords = Arrays.copyOfRange(arguments, 1, arguments.length);
+            return new FindCommand(new PhoneContainsKeywordsPredicate(Arrays.asList(keywords)));
+        case "-e":
+            keywords = Arrays.copyOfRange(arguments, 1, arguments.length);
+            return new FindCommand(new EmailContainsKeywordsPredicate(Arrays.asList(keywords)));
+        case "-a":
+            keywords = Arrays.copyOfRange(arguments, 1, arguments.length);
+            return new FindCommand(new AddressContainsKeywordsPredicate(Arrays.asList(keywords)));
+        case "-t":
+            keywords = Arrays.copyOfRange(arguments, 1, arguments.length);
+            return new FindCommand(new TagsContainsKeywordsPredicate(Arrays.asList(keywords)));
+        default:
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+----
+
+The first if-block captures the case for no specifiers, while the switch-case block captures the case for valid specifiers and throws an exception when the specifier is invalid.
+
+==== Rationale
+The rationale for improving the `find` command is the fact that users of an application containing contact data would like to be able to search for a contact easily using keywords.
+
+It was important to make sure that the `find` command would search through fields other than the Name of the Person, as relevant information may be contained in other fields.
+
+It was also important to be able to specify the field the user was interested in searching as this would increase the relevance of search results or reduce the occurence of irrelevant results. For example, if I searched "Baker" and there was a contact whose address was "Baker Street" and there was another contact who had been tagged as "Baker" I would receive two search results. But if I wanted to only view contacts who had been _tagged_ as "Baker", then I need only enter the specifier `-t` to increase the relevance of the results. This becomes more important as the size of the addressbook gets larger. Having more relevant results also increases the speed at which a user can use the application.
+
 == Documentation
 
 We use asciidoc for writing documentation.
