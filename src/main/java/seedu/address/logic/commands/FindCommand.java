@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
-import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import java.util.function.Predicate;
+
+import seedu.address.model.person.Person;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -11,20 +13,22 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
     public static final String COMMAND_ALIAS = "f";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose fields contain any of "
+            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
+            + "Valid specifiers are -all, -n, -p, -e, -a, -t, for ALL, NAME, PHONE, EMAIL, ADDRESS and TAGS"
+            + " respectively \n"
+            + "Parameters: [SPECIFIER] KEYWORD [MORE_KEYWORDS]...\n"
+            + "Example: " + COMMAND_WORD + " -n alice bob charlie";
 
-    private final PersonContainsKeywordsPredicate personContainsKeyWordsPredicate;
+    private final Predicate<Person> predicate;
 
-    public FindCommand(PersonContainsKeywordsPredicate personContainsKeyWordsPredicate) {
-        this.personContainsKeyWordsPredicate = personContainsKeyWordsPredicate;
+    public FindCommand(Predicate<Person> predicate) {
+        this.predicate = predicate;
     }
 
     @Override
     public CommandResult execute() {
-        model.updateFilteredPersonList(personContainsKeyWordsPredicate);
+        model.updateFilteredPersonList(predicate);
         return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
     }
 
@@ -32,7 +36,7 @@ public class FindCommand extends Command {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof FindCommand // instanceof handles nulls
-                && this.personContainsKeyWordsPredicate.equals(((FindCommand) other).personContainsKeyWordsPredicate));
+                && this.predicate.equals(((FindCommand) other).predicate));
         // state check
     }
 }
