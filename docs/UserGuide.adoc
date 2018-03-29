@@ -187,6 +187,26 @@ Alias: `h` +
 Format: `history` +
 Keyboard shortcut: `Alt` + `H`
 
+=== Locating a person on Google map : `locate`
+
+Locate the person identified by the index number used in the last person listing. +
+Alias: `lo` +
+Format: `locate INDEX`
+
+****
+* Locates the person and loads the location of the person at the specified `INDEX` on Google map.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* `1, 2, 3, ...`
+****
+
+Examples:
+
+* `locate 2` +
+Locates the 2nd person in the list on Google map.
+* locate 1` +
+Locates the 1st person in the list on Google map.
+
+
 [NOTE]
 ====
 Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
