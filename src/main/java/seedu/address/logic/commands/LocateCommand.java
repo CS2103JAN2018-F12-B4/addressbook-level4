@@ -1,3 +1,4 @@
+//@@author zhangriqi
 package seedu.address.logic.commands;
 
 import java.util.List;
@@ -41,11 +42,11 @@ public class LocateCommand extends Command {
         }
 
         Person location = lastShownList.get(targetIndex.getZeroBased());
-
+        //@@author unknown-reused
         // Open Google Map on BrowserPanel
         MainWindow.loadUrl("https://www.google.com.sg/maps/place/"
                 + location.getAddress().toString());
-
+        //@@author
         EventsCenter.getInstance().post(new LocateRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_LOCATE_SUCCESS, targetIndex.getOneBased()));
 

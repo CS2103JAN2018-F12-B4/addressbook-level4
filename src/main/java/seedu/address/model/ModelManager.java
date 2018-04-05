@@ -91,13 +91,13 @@ public class ModelManager extends ComponentManager implements Model {
     public ObservableList<Person> getFilteredPersonList() {
         return FXCollections.unmodifiableObservableList(filteredPersons);
     }
-
+    //@@author zhangriqi
     @Override
     public void updateFilteredPersonList(Predicate<Person> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
     }
-
+    //@@author
     @Override
     public boolean equals(Object obj) {
         // short circuit if same object
