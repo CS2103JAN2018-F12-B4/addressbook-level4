@@ -15,9 +15,23 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.ExecuteCommandRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.PopulatePrefixesRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.logic.Logic;
+import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AssignCommand;
+import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.LocateCommand;
+import seedu.address.logic.commands.RedoCommand;
+import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.UserPrefs;
 
 /**
@@ -45,6 +59,47 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane commandBoxPlaceholder;
+
+    //@@author jonleeyz
+    @FXML
+    private MenuItem exitMenuItem;
+
+    @FXML
+    private MenuItem undoMenuItem;
+
+    @FXML
+    private MenuItem redoMenuItem;
+
+    @FXML
+    private MenuItem clearMenuItem;
+
+    @FXML
+    private MenuItem historyMenuItem;
+
+    @FXML
+    private MenuItem listMenuItem;
+
+    @FXML
+    private MenuItem findMenuItem;
+
+    @FXML
+    private MenuItem addMenuItem;
+
+    @FXML
+    private MenuItem deleteMenuItem;
+
+    @FXML
+    private MenuItem editMenuItem;
+
+    @FXML
+    private MenuItem locateMenuItem;
+
+    @FXML
+    private MenuItem selectMenuItem;
+    //@@author
+
+    @FXML
+    private MenuItem assignMenuItem;
 
     @FXML
     private MenuItem helpMenuItem;
@@ -79,9 +134,28 @@ public class MainWindow extends UiPart<Stage> {
         return primaryStage;
     }
 
+    //@@author jonleeyz
     private void setAccelerators() {
+        setAccelerator(exitMenuItem, KeyCombination.valueOf("Alt + Q"));
+
+        setAccelerator(undoMenuItem, KeyCombination.valueOf("Ctrl + Z"));
+        setAccelerator(redoMenuItem, KeyCombination.valueOf("Ctrl + Y"));
+        setAccelerator(clearMenuItem, KeyCombination.valueOf("Ctrl + Shift + C"));
+
+        setAccelerator(historyMenuItem, KeyCombination.valueOf("Ctrl + H"));
+        setAccelerator(listMenuItem, KeyCombination.valueOf("F2"));
+        setAccelerator(findMenuItem, KeyCombination.valueOf("Ctrl + F"));
+
+        setAccelerator(addMenuItem, KeyCombination.valueOf("Ctrl + Space"));
+        setAccelerator(deleteMenuItem, KeyCombination.valueOf("Ctrl + D"));
+        setAccelerator(editMenuItem, KeyCombination.valueOf("Ctrl + E"));
+        setAccelerator(locateMenuItem, KeyCombination.valueOf("Ctrl + L"));
+        setAccelerator(selectMenuItem, KeyCombination.valueOf("Ctrl + S"));
+        setAccelerator(assignMenuItem, KeyCombination.valueOf("Ctrl + Shift + A"));
+
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
     }
+    //@@author
 
     /**
      * Sets the accelerator of a MenuItem.
@@ -165,10 +239,109 @@ public class MainWindow extends UiPart<Stage> {
      * Opens the help window.
      */
     @FXML
-    public void handleHelp() {
+    private void handleHelp() {
         HelpWindow helpWindow = new HelpWindow();
         helpWindow.show();
     }
+
+    //@@author jonleeyz
+    /**
+     * Executes the {@code undo} operation
+     */
+    @FXML
+    private void handleUndo() {
+        raise(new ExecuteCommandRequestEvent(new UndoCommand()));
+    }
+
+    /**
+     * Executes the {@code redo} operation
+     */
+    @FXML
+    private void handleRedo() {
+        raise(new ExecuteCommandRequestEvent(new RedoCommand()));
+    }
+
+    /**
+     * Executes the {@code clear} operation
+     */
+    @FXML
+    private void handleClear() {
+        raise(new ExecuteCommandRequestEvent(new ClearCommand()));
+    }
+
+    /**
+     * Executes the {@code history} operation
+     */
+    @FXML
+    private void handleHistory() {
+        raise(new ExecuteCommandRequestEvent(new HistoryCommand()));
+    }
+
+    /**
+     * Executes the {@code list} operation
+     */
+    @FXML
+    private void handleList() {
+        raise(new ExecuteCommandRequestEvent(new ListCommand()));
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the {@code FindCommand} prefixes.
+     */
+    @FXML
+    private void handleFind() {
+        raise(new PopulatePrefixesRequestEvent(new FindCommand()));
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the {@code AddCommand} prefixes.
+     */
+    @FXML
+    private void handleAdd() {
+        raise(new PopulatePrefixesRequestEvent(new AddCommand()));
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the {@code DeleteCommand} prefixes.
+     */
+    @FXML
+    private void handleDelete() {
+        raise(new PopulatePrefixesRequestEvent(new DeleteCommand()));
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the {@code EditCommand} prefixes.
+     */
+    @FXML
+    private void handleEdit() {
+        raise(new PopulatePrefixesRequestEvent(new EditCommand()));
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the {@code LocateCommand} prefixes.
+     */
+    @FXML
+    private void handleLocate() {
+        raise(new PopulatePrefixesRequestEvent(new LocateCommand()));
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the {@code SelectCommand} prefixes.
+     */
+    @FXML
+    private void handleSelect() {
+        raise(new PopulatePrefixesRequestEvent(new SelectCommand()));
+    }
+    //@@author
+
+    /**
+     * Populates the {@code CommandBox} with the {@code AssignCommand} prefixes.
+     */
+    @FXML
+    private void handleAssign() {
+        raise(new PopulatePrefixesRequestEvent(new AssignCommand()));
+    }
+
 
     void show() {
         primaryStage.show();
@@ -195,7 +368,7 @@ public class MainWindow extends UiPart<Stage> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
     }
-
+    //@@author zhangriqi
     public static void loadUrl(String url) {
         browserPanel.loadPage(url);
     }

@@ -14,7 +14,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 /**
  * Deletes a person identified using it's last displayed index from the address book.
  */
-public class DeleteCommand extends UndoableCommand {
+public class DeleteCommand extends UndoableCommand implements PopulatableCommand {
 
     public static final String COMMAND_WORD = "delete";
     public static final String COMMAND_ALIAS = "d";
@@ -32,6 +32,13 @@ public class DeleteCommand extends UndoableCommand {
 
     public DeleteCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
+    }
+
+    /**
+     * For call in PopulatePrefixRequestEvent class, to assign string values.
+     */
+    public DeleteCommand() {
+        targetIndex = null;
     }
 
 
@@ -65,4 +72,26 @@ public class DeleteCommand extends UndoableCommand {
                 && this.targetIndex.equals(((DeleteCommand) other).targetIndex) // state check
                 && Objects.equals(this.personToDelete, ((DeleteCommand) other).personToDelete));
     }
+
+    //@@author jonleeyz
+    @Override
+    public String getCommandWord() {
+        return COMMAND_WORD;
+    }
+
+    @Override
+    public String getTemplate() {
+        return COMMAND_WORD + " ";
+    }
+
+    @Override
+    public int getCaretIndex() {
+        return getTemplate().length();
+    }
+
+    @Override
+    public String getUsageMessage() {
+        return MESSAGE_USAGE;
+    }
+    //@@author
 }

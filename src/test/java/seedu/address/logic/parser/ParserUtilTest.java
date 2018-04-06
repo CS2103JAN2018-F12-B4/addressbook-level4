@@ -136,11 +136,15 @@ public class ParserUtilTest {
         Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((Optional<String>) null));
     }
 
+    //in current implementation, blank address argument is not invalid, it is needed for constructing optional fields
+    // as empty
+    /*
     @Test
     public void parseAddress_invalidValue_throwsIllegalValueException() {
         Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseAddress(INVALID_ADDRESS));
         Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseAddress(Optional.of(INVALID_ADDRESS)));
     }
+    */
 
     @Test
     public void parseAddress_optionalEmpty_returnsOptionalEmpty() throws Exception {

@@ -2,13 +2,17 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.ExecuteCommandRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
+import seedu.address.commons.events.ui.PopulatePrefixesRequestEvent;
 import seedu.address.logic.ListElementPointer;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
@@ -36,6 +40,7 @@ public class CommandBox extends UiPart<Region> {
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
         historySnapshot = logic.getHistorySnapshot();
+        registerAsAnEventHandler(this);
     }
 
     /**
@@ -48,7 +53,6 @@ public class CommandBox extends UiPart<Region> {
             // As up and down buttons will alter the position of the caret,
             // consuming it causes the caret's position to remain unchanged
             keyEvent.consume();
-
             navigateToPreviousInput();
             break;
         case DOWN:
@@ -69,7 +73,6 @@ public class CommandBox extends UiPart<Region> {
         if (!historySnapshot.hasPrevious()) {
             return;
         }
-
         replaceText(historySnapshot.previous());
     }
 
@@ -82,8 +85,16 @@ public class CommandBox extends UiPart<Region> {
         if (!historySnapshot.hasNext()) {
             return;
         }
-
         replaceText(historySnapshot.next());
+    }
+
+    /**
+     * Sets {@code CommandBox}'s text field with {@code text} and
+     * positions the caret to the specified index.
+     */
+    private void replaceText(String text, int caretPosition) {
+        commandTextField.setText(text);
+        commandTextField.positionCaret(caretPosition);
     }
 
     /**
@@ -91,8 +102,7 @@ public class CommandBox extends UiPart<Region> {
      * positions the caret to the end of the {@code text}.
      */
     private void replaceText(String text) {
-        commandTextField.setText(text);
-        commandTextField.positionCaret(commandTextField.getText().length());
+        replaceText(text, text.length());
     }
 
     /**
@@ -110,16 +120,38 @@ public class CommandBox extends UiPart<Region> {
             // process result of the command
             commandTextField.setText("");
             logger.info("Result: " + commandResult.feedbackToUser);
-            raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
-
+            raise(new NewResultAvailableEvent(commandResult.feedbackToUser, true));
         } catch (CommandException | ParseException e) {
             initHistory();
             // handle command failure
             setStyleToIndicateCommandFailure();
             logger.info("Invalid command: " + commandTextField.getText());
-            raise(new NewResultAvailableEvent(e.getMessage()));
+            raise(new NewResultAvailableEvent(e.getMessage(), false));
         }
     }
+
+    //@@author jonleeyz
+    /**
+     * Handles the event where a valid keyboard shortcut is pressed
+     * to populate the CommandBox with command prefixes,
+     * {@code PopulatePrefixesRequestEvent}.
+     */
+    @Subscribe
+    private void handlePopulatePrefixesRequestEvent(PopulatePrefixesRequestEvent event) {
+        replaceText(event.commandTemplate, event.caretIndex);
+    }
+
+    /**
+     * Handles the event where a valid keyboard shortcut is pressed
+     * to execute a command immediately
+     * {@code CommandRequestEvent}.
+     */
+    @Subscribe
+    private void handleExecuteCommandRequestEvent(ExecuteCommandRequestEvent event) {
+        replaceText(event.commandWord);
+        handleCommandInputChanged();
+    }
+    //@@author
 
     /**
      * Initializes the history snapshot.
@@ -143,11 +175,9 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
-
         if (styleClass.contains(ERROR_STYLE_CLASS)) {
             return;
         }
-
         styleClass.add(ERROR_STYLE_CLASS);
     }
 

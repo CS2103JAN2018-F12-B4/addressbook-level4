@@ -5,6 +5,7 @@ import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.RedoCommand;
@@ -54,6 +55,26 @@ public class ClearCommandSystemTest extends AddressBookSystemTest {
 
         /* Case: mixed case command word -> rejected */
         assertCommandFailure("ClEaR", MESSAGE_UNKNOWN_COMMAND);
+
+        //@@author jonleeyz
+        /* Case: simulate press of Ctrl + Shift + C -> cleared */
+        executeCommand(UndoCommand.COMMAND_WORD); // undoes last clear command: address book still will be empty
+        executeCommand(UndoCommand.COMMAND_WORD); // restores the original address book
+        assertKeyboardShortcutSuccess(ClearCommand.MESSAGE_SUCCESS,
+                new ModelManager(),
+                KeyCode.CONTROL,
+                KeyCode.SHIFT,
+                KeyCode.C);
+        assertSelectedCardUnchanged();
+
+        /* Case: simulate click of "Clear the Database" menu item -> cleared */
+        executeCommand(UndoCommand.COMMAND_WORD); // restores the original address book
+        assertMenuItemSuccess(ClearCommand.MESSAGE_SUCCESS,
+                new ModelManager(),
+                "Edit",
+                "Clear the Database");
+        assertSelectedCardUnchanged();
+        //@@author
     }
 
     /**
@@ -76,7 +97,7 @@ public class ClearCommandSystemTest extends AddressBookSystemTest {
     private void assertCommandSuccess(String command, String expectedResultMessage, Model expectedModel) {
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
-        assertCommandBoxShowsDefaultStyle();
+        assertCommandBoxAndResultDisplayShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();
     }
 
@@ -95,7 +116,37 @@ public class ClearCommandSystemTest extends AddressBookSystemTest {
         executeCommand(command);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertSelectedCardUnchanged();
-        assertCommandBoxShowsErrorStyle();
+        assertCommandBoxAndResultDisplayShowsErrorStyle();
         assertStatusBarUnchanged();
     }
+
+    //@@author jonleeyz
+    /**
+     * Performs the same verification as {@code assertCommandSuccess(String, String, Model)} except that the command
+     * is executed using its keyboard shortcut.
+     * @see ClearCommandSystemTest#assertCommandSuccess(String, String, Model)
+     */
+    private void assertKeyboardShortcutSuccess(String expectedResultMessage,
+                                               Model expectedModel,
+                                               KeyCode... combination) {
+        executeUsingAccelerator(combination);
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+        assertCommandBoxAndResultDisplayShowsDefaultStyle();
+        assertStatusBarUnchangedExceptSyncStatus();
+    }
+
+    /**
+     * Performs the same verification as {@code assertCommandSuccess(String, String, Model)} except that the command
+     * is executed using its menu item.
+     * @see ClearCommandSystemTest#assertCommandSuccess(String, String, Model)
+     */
+    private void assertMenuItemSuccess(String expectedResultMessage,
+                                               Model expectedModel,
+                                               String... menuItems) {
+        executeUsingMenuItem(menuItems);
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+        assertCommandBoxAndResultDisplayShowsDefaultStyle();
+        assertStatusBarUnchangedExceptSyncStatus();
+    }
+    //@@author
 }

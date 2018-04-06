@@ -1,5 +1,7 @@
 package systemtests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -12,6 +14,8 @@ import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
 
+import guitests.GuiRobot;
+import javafx.scene.input.KeyCode;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
@@ -25,6 +29,7 @@ public class DeleteCommandSystemTest extends AddressBookSystemTest {
 
     private static final String MESSAGE_INVALID_DELETE_COMMAND_FORMAT =
             String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
+    private final GuiRobot guiRobot = new GuiRobot();
 
     @Test
     public void delete() {
@@ -112,6 +117,32 @@ public class DeleteCommandSystemTest extends AddressBookSystemTest {
         assertCommandFailure("DelETE 1", MESSAGE_UNKNOWN_COMMAND);
     }
 
+    //@@author jonleeyz
+    @Test
+    public void populateDeleteCommandTemplate() {
+        //use accelerator
+        getCommandBox().click();
+        populateDeleteCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getResultDisplay().click();
+        populateDeleteCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getPersonListPanel().click();
+        populateDeleteCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getBrowserPanel().click();
+        populateDeleteCommandUsingAccelerator();
+        assertPopulationFailure();
+
+        //use menu button
+        populateDeleteCommandUsingMenu();
+        assertPopulationSuccess();
+    }
+    //@@author
+
     /**
      * Removes the {@code Person} at the specified {@code index} in {@code model}'s address book.
      * @return the removed person
@@ -173,7 +204,7 @@ public class DeleteCommandSystemTest extends AddressBookSystemTest {
             assertSelectedCardUnchanged();
         }
 
-        assertCommandBoxShowsDefaultStyle();
+        assertCommandBoxAndResultDisplayShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();
     }
 
@@ -194,7 +225,57 @@ public class DeleteCommandSystemTest extends AddressBookSystemTest {
         executeCommand(command);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertSelectedCardUnchanged();
-        assertCommandBoxShowsErrorStyle();
+        assertCommandBoxAndResultDisplayShowsErrorStyle();
         assertStatusBarUnchanged();
     }
+
+    //@@author jonleeyz
+    /**
+     * Asserts that population of the {@code CommandBox} with the AddCommand
+     * template was successful.
+     */
+    private void assertPopulationSuccess() {
+        DeleteCommand deleteCommand = new DeleteCommand();
+        assertEquals(deleteCommand.getTemplate(), getCommandBox().getInput());
+        assertEquals(deleteCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+
+    /**
+     * Asserts that population of the {@code CommandBox} with the AddCommand
+     * template was unsuccessful.
+     */
+    private void assertPopulationFailure() {
+        DeleteCommand deleteCommand = new DeleteCommand();
+        assertNotEquals(deleteCommand.getTemplate(), getCommandBox().getInput());
+        assertNotEquals(deleteCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the DeleteCommand template
+     * using the associated accelerator in {@code MainWindow}.
+     */
+    private void populateDeleteCommandUsingAccelerator() {
+        populateUsingAccelerator(KeyCode.CONTROL, KeyCode.D);
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the DeleteCommand template
+     * using the menu bar in {@code MainWindow}.
+     */
+    private void populateDeleteCommandUsingMenu() {
+        populateUsingMenu("Actions", "Delete a Person...");
+    }
+    //@@author
 }

@@ -14,11 +14,13 @@ public class PhoneTest {
         Assert.assertThrows(NullPointerException.class, () -> new Phone(null));
     }
 
+    /*not invalid
     @Test
     public void constructor_invalidPhone_throwsIllegalArgumentException() {
         String invalidPhone = "";
         Assert.assertThrows(IllegalArgumentException.class, () -> new Phone(invalidPhone));
     }
+    */
 
     @Test
     public void isValidPhone() {
@@ -26,7 +28,7 @@ public class PhoneTest {
         Assert.assertThrows(NullPointerException.class, () -> Phone.isValidPhone(null));
 
         // invalid phone numbers
-        assertFalse(Phone.isValidPhone("")); // empty string
+        //not invalid -- assertFalse(Phone.isValidPhone("")); // empty string
         assertFalse(Phone.isValidPhone(" ")); // spaces only
         assertFalse(Phone.isValidPhone("91")); // less than 3 numbers
         assertFalse(Phone.isValidPhone("phone")); // non-numeric

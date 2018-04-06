@@ -14,7 +14,9 @@
 <fx:root type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
          minWidth="450" minHeight="600">
   <icons>
-    <Image url="@/images/address_book_32.png" />
+    <!--@@author zhangriqi -->
+    <Image url="@/images/loanshark_logo.png" />
+    <!--@@author -->
   </icons>
   <scene>
     <Scene>
@@ -26,8 +28,28 @@
       <VBox>
         <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
           <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
+            <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" onAction="#handleExit" text="Exit" />
           </Menu>
+          <!--@@author jonleeyz -->
+          <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem fx:id="undoMenuItem" mnemonicParsing="false" onAction="#handleUndo" text="Undo" />
+            <MenuItem fx:id="redoMenuItem" mnemonicParsing="false" onAction="#handleRedo" text="Redo" />
+            <MenuItem fx:id="clearMenuItem" mnemonicParsing="false" onAction="#handleClear" text="Clear the Database" />
+          </Menu>
+          <Menu mnemonicParsing="false" text="View">
+            <MenuItem fx:id="historyMenuItem" mnemonicParsing="false" onAction="#handleHistory" text="History" />
+            <MenuItem fx:id="listMenuItem" mnemonicParsing="false" onAction="#handleList" text="List all" />
+            <MenuItem fx:id="findMenuItem" mnemonicParsing="false" onAction="#handleFind" text="Find..." />
+          </Menu>
+          <Menu mnemonicParsing="false" text="Actions">
+            <MenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#handleAdd" text="Add a Person..." />
+            <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#handleDelete" text="Delete a Person..." />
+            <MenuItem fx:id="editMenuItem" mnemonicParsing="false" onAction="#handleEdit" text="Edit a Person..." />
+            <MenuItem fx:id="locateMenuItem" mnemonicParsing="false" onAction="#handleLocate" text="Locate a Person..." />
+            <MenuItem fx:id="selectMenuItem" mnemonicParsing="false" onAction="#handleSelect" text="Select a Person..." />
+            <MenuItem fx:id="assignMenuItem" mnemonicParsing="false" onAction="#handleAssign" text="Assign Customers to a Runner..." />
+          </Menu>
+          <!--@@author -->
           <Menu mnemonicParsing="false" text="Help">
             <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
           </Menu>

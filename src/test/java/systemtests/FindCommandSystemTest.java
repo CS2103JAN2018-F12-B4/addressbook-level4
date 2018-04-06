@@ -1,6 +1,9 @@
 package systemtests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.testutil.TypicalPersons.ALICE;
@@ -17,6 +20,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import guitests.GuiRobot;
+import javafx.scene.input.KeyCode;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.FindCommand;
@@ -25,7 +30,9 @@ import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
 import seedu.address.model.tag.Tag;
 
+//@@author melvintzw
 public class FindCommandSystemTest extends AddressBookSystemTest {
+    private final GuiRobot guiRobot = new GuiRobot();
 
     @Test
     public void find() {
@@ -163,6 +170,32 @@ public class FindCommandSystemTest extends AddressBookSystemTest {
         assertCommandFailure(command, MESSAGE_UNKNOWN_COMMAND);
     }
 
+    //@@author jonleeyz
+    @Test
+    public void populateFindCommandTemplate() {
+        //use accelerator
+        getCommandBox().click();
+        populateFindCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getResultDisplay().click();
+        populateFindCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getPersonListPanel().click();
+        populateFindCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getBrowserPanel().click();
+        populateFindCommandUsingAccelerator();
+        assertPopulationFailure();
+
+        //use menu button
+        populateFindCommandUsingMenu();
+        assertPopulationSuccess();
+    }
+    //@@author
+
     /**
      * Executes {@code command} and verifies that the command box displays an empty string, the result display
      * box displays {@code Messages#MESSAGE_PERSONS_LISTED_OVERVIEW} with the number of people in the filtered list,
@@ -179,7 +212,7 @@ public class FindCommandSystemTest extends AddressBookSystemTest {
 
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
-        assertCommandBoxShowsDefaultStyle();
+        assertCommandBoxAndResultDisplayShowsDefaultStyle();
         assertStatusBarUnchanged();
     }
 
@@ -198,7 +231,57 @@ public class FindCommandSystemTest extends AddressBookSystemTest {
         executeCommand(command);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertSelectedCardUnchanged();
-        assertCommandBoxShowsErrorStyle();
+        assertCommandBoxAndResultDisplayShowsErrorStyle();
         assertStatusBarUnchanged();
     }
+
+    //@@author jonleeyz
+    /**
+     * Asserts that population of the {@code CommandBox} with the AddCommand
+     * template was successful.
+     */
+    private void assertPopulationSuccess() {
+        FindCommand findCommand = new FindCommand();
+        assertEquals(findCommand.getTemplate(), getCommandBox().getInput());
+        assertEquals(findCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+
+    /**
+     * Asserts that population of the {@code CommandBox} with the AddCommand
+     * template was unsuccessful.
+     */
+    private void assertPopulationFailure() {
+        FindCommand findCommand = new FindCommand();
+        assertNotEquals(findCommand.getTemplate(), getCommandBox().getInput());
+        assertNotEquals(findCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the FindCommand template
+     * using the associated accelerator in {@code MainWindow}.
+     */
+    private void populateFindCommandUsingAccelerator() {
+        populateUsingAccelerator(KeyCode.CONTROL, KeyCode.F);
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the FindCommand template
+     * using the menu bar in {@code MainWindow}.
+     */
+    private void populateFindCommandUsingMenu() {
+        populateUsingMenu("View", "Find...");
+    }
+    //@@author
 }

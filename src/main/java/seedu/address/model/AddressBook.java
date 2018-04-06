@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.person.customer.Customer;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.person.runner.Runner;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -128,11 +130,25 @@ public class AddressBook implements ReadOnlyAddressBook {
         final Map<Tag, Tag> masterTagObjects = new HashMap<>();
         tags.forEach(tag -> masterTagObjects.put(tag, tag));
 
-        // Rebuild the list of person tags to point to the relevant tags in the master tag list.
+        // Rebuild the list of person, customer or runner tags to point to the relevant tags in the master tag list.
         final Set<Tag> correctTagReferences = new HashSet<>();
         personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag)));
-        return new Person(
-                person.getName(), person.getPhone(), person.getEmail(), person.getAddress(), correctTagReferences);
+
+        if (person instanceof Customer) {
+
+            return new Customer(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                    correctTagReferences, ((Customer) person).getMoneyBorrowed(), ((Customer) person).getOweStartDate
+                    (), ((Customer) person).getOweDueDate(), ((Customer) person).getStandardInterest(), ((Customer)
+                    person).getLateInterest(), ((Customer) person).getRunner());
+
+        } else if (person instanceof Runner) {
+            return new Runner(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                    correctTagReferences, ((Runner) person).getCustomers());
+        } else {
+            return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                    correctTagReferences);
+        }
+
     }
 
     /**

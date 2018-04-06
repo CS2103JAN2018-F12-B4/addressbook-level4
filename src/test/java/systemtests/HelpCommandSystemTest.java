@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import guitests.GuiRobot;
 import guitests.guihandles.HelpWindowHandle;
+import javafx.scene.input.KeyCode;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.SelectCommand;
@@ -32,23 +33,23 @@ public class HelpCommandSystemTest extends AddressBookSystemTest {
     public void openHelpWindow() {
         //use accelerator
         getCommandBox().click();
-        getMainMenu().openHelpWindowUsingAccelerator();
+        executeHelpCommandUsingAccelerator();
         assertHelpWindowOpen();
 
         getResultDisplay().click();
-        getMainMenu().openHelpWindowUsingAccelerator();
+        executeHelpCommandUsingAccelerator();
         assertHelpWindowOpen();
 
         getPersonListPanel().click();
-        getMainMenu().openHelpWindowUsingAccelerator();
+        executeHelpCommandUsingAccelerator();
         assertHelpWindowOpen();
 
         getBrowserPanel().click();
-        getMainMenu().openHelpWindowUsingAccelerator();
+        executeHelpCommandUsingAccelerator();
         assertHelpWindowNotOpen();
 
         //use menu button
-        getMainMenu().openHelpWindowUsingMenu();
+        executeHelpCommandUsingMenu();
         assertHelpWindowOpen();
 
         //use command box
@@ -62,7 +63,7 @@ public class HelpCommandSystemTest extends AddressBookSystemTest {
         // assert that while the help window is open the UI updates correctly for a command execution
         executeCommand(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals("", getCommandBox().getInput());
-        assertCommandBoxShowsDefaultStyle();
+        assertCommandBoxAndResultDisplayShowsDefaultStyle();
         assertNotEquals(HelpCommand.SHOWING_HELP_MESSAGE, getResultDisplay().getText());
         assertNotEquals(BrowserPanel.DEFAULT_PAGE, getBrowserPanel().getLoadedUrl());
         assertListMatching(getPersonListPanel(), getModel().getFilteredPersonList());
@@ -91,4 +92,19 @@ public class HelpCommandSystemTest extends AddressBookSystemTest {
         assertFalse(ERROR_MESSAGE, HelpWindowHandle.isWindowPresent());
     }
 
+    //@@author jonleeyz
+    /**
+     * Executes the HelpCommand using its accelerator in {@code MainMenu}
+     */
+    private void executeHelpCommandUsingAccelerator() {
+        executeUsingAccelerator(KeyCode.F1);
+    }
+
+    /**
+     * Executes the HelpCommand using its menu bar item in {@code MainMenu}.
+     */
+    private void executeHelpCommandUsingMenu() {
+        executeUsingMenuItem("Help", "F1");
+    }
+    //@@author
 }

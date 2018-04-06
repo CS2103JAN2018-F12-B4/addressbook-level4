@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -24,14 +25,19 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.customer.Customer;
+import seedu.address.model.person.customer.LateInterest;
+import seedu.address.model.person.customer.MoneyBorrowed;
+import seedu.address.model.person.customer.StandardInterest;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.person.runner.Runner;
 import seedu.address.model.tag.Tag;
 
 /**
  * Edits the details of an existing person in the address book.
  */
-public class EditCommand extends UndoableCommand {
+public class EditCommand extends UndoableCommand implements PopulatableCommand {
 
     public static final String COMMAND_WORD = "edit";
     public static final String COMMAND_ALIAS = "e";
@@ -71,6 +77,15 @@ public class EditCommand extends UndoableCommand {
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
+    /**
+     * For call in PopulatePrefixRequestEvent class, to assign string values.
+     */
+    public EditCommand() {
+        index = null;
+        editPersonDescriptor = null;
+    }
+
+
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
@@ -100,7 +115,9 @@ public class EditCommand extends UndoableCommand {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) throws
+            CommandException {
+
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -109,7 +126,36 @@ public class EditCommand extends UndoableCommand {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        //@@author melvintzw
+        if (personToEdit instanceof Customer) {
+
+            MoneyBorrowed moneyBorrowed = editPersonDescriptor.getMoneyBorrowed().orElse(((Customer) personToEdit)
+                    .getMoneyBorrowed());
+            Date oweStartDate = editPersonDescriptor.getOweStartDate().orElse(((Customer) personToEdit)
+                    .getOweStartDate());
+            Date oweDueDate = editPersonDescriptor.getOweDueDate().orElse(((Customer) personToEdit)
+                    .getOweDueDate());
+            StandardInterest standardInterest = editPersonDescriptor.getStandardInterest()
+                    .orElse(((Customer) personToEdit).getStandardInterest());
+            LateInterest lateInterest = editPersonDescriptor.getLateInterest().orElse(((Customer) personToEdit)
+                    .getLateInterest());
+            Runner runner = editPersonDescriptor.getRunner().orElse(((Customer) personToEdit)
+                    .getRunner());
+
+            return new Customer(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, moneyBorrowed,
+                    oweStartDate, oweDueDate, standardInterest, lateInterest, runner);
+
+        } else if (personToEdit instanceof Runner) {
+
+            List<Person> customers = editPersonDescriptor.getCustomers().orElse(((Runner) personToEdit)
+                    .getCustomers());
+
+            return new Runner(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, customers);
+
+        } else {
+
+            throw new CommandException("Error: Invalid Person");
+        }
     }
 
     @Override
@@ -131,6 +177,29 @@ public class EditCommand extends UndoableCommand {
                 && Objects.equals(personToEdit, e.personToEdit);
     }
 
+    //@@author jonleeyz
+    @Override
+    public String getCommandWord() {
+        return COMMAND_WORD;
+    }
+
+    @Override
+    public String getTemplate() {
+        return COMMAND_WORD + " ";
+    }
+
+    @Override
+    public int getCaretIndex() {
+        return getTemplate().length();
+    }
+
+    @Override
+    public String getUsageMessage() {
+        return MESSAGE_USAGE;
+    }
+    //@@author
+
+    //@@author melvintzw-reused
     /**
      * Stores the details to edit the person with. Each non-empty field value will replace the
      * corresponding field value of the person.
@@ -141,6 +210,17 @@ public class EditCommand extends UndoableCommand {
         private Email email;
         private Address address;
         private Set<Tag> tags;
+
+        //Customer fields
+        private MoneyBorrowed moneyBorrowed;
+        private Date oweStartDate;
+        private Date oweDueDate;
+        private StandardInterest standardInterest;
+        private LateInterest lateInterest;
+        private Runner runner;
+
+        //Runner fields
+        private List<Person> customers;
 
         public EditPersonDescriptor() {}
 
@@ -154,19 +234,29 @@ public class EditCommand extends UndoableCommand {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
+
+            setMoneyBorrowed(toCopy.moneyBorrowed);
+            setOweStartDate(toCopy.oweStartDate);
+            setOweDueDate(toCopy.oweDueDate);
+            setStandardInterest(toCopy.standardInterest);
+            setLateInterest(toCopy.lateInterest);
+            setRunner(toCopy.runner);
+
+            setCustomers(toCopy.customers);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address, this.tags);
+            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address, this.tags,
+                    this.moneyBorrowed, this.oweStartDate, this.oweDueDate, this.standardInterest, this.lateInterest,
+                    this.runner);
         }
 
         public void setName(Name name) {
             this.name = name;
         }
-
         public Optional<Name> getName() {
             return Optional.ofNullable(name);
         }
@@ -174,7 +264,6 @@ public class EditCommand extends UndoableCommand {
         public void setPhone(Phone phone) {
             this.phone = phone;
         }
-
         public Optional<Phone> getPhone() {
             return Optional.ofNullable(phone);
         }
@@ -182,7 +271,6 @@ public class EditCommand extends UndoableCommand {
         public void setEmail(Email email) {
             this.email = email;
         }
-
         public Optional<Email> getEmail() {
             return Optional.ofNullable(email);
         }
@@ -190,9 +278,57 @@ public class EditCommand extends UndoableCommand {
         public void setAddress(Address address) {
             this.address = address;
         }
-
         public Optional<Address> getAddress() {
             return Optional.ofNullable(address);
+        }
+
+        public void setMoneyBorrowed(MoneyBorrowed moneyBorrowed) {
+            this.moneyBorrowed = moneyBorrowed;
+        }
+        public Optional<MoneyBorrowed> getMoneyBorrowed() {
+            return Optional.ofNullable(moneyBorrowed);
+        }
+
+        public void setOweStartDate(Date oweStartDate) {
+            this.oweStartDate = oweStartDate;
+        }
+        public Optional<Date> getOweStartDate() {
+            return Optional.ofNullable(oweStartDate);
+        }
+
+        public void setOweDueDate(Date oweDueDate) {
+            this.oweDueDate = oweDueDate;
+        }
+        public Optional<Date> getOweDueDate() {
+            return Optional.ofNullable(oweDueDate);
+        }
+
+        public void setStandardInterest(StandardInterest standardInterest) {
+            this.standardInterest = standardInterest;
+        }
+        public Optional<StandardInterest> getStandardInterest() {
+            return Optional.ofNullable(standardInterest);
+        }
+
+        public void setLateInterest(LateInterest lateInterest) {
+            this.lateInterest = lateInterest;
+        }
+        public Optional<LateInterest> getLateInterest() {
+            return Optional.ofNullable(lateInterest);
+        }
+
+        public void setRunner(Runner runner) {
+            this.runner = runner;
+        }
+        public Optional<Runner> getRunner() {
+            return Optional.ofNullable(runner);
+        }
+
+        public void setCustomers(List<Person> customers) {
+            this.customers = customers;
+        }
+        public Optional<List<Person>> getCustomers() {
+            return Optional.ofNullable(customers);
         }
 
         /**
@@ -232,6 +368,8 @@ public class EditCommand extends UndoableCommand {
                     && getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
                     && getTags().equals(e.getTags());
+            //TODO: add .equals for Runner and Customer
         }
     }
+    //@@author
 }

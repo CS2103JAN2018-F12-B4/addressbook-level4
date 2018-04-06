@@ -14,11 +14,15 @@ public class AddressTest {
         Assert.assertThrows(NullPointerException.class, () -> new Address(null));
     }
 
+    //in current implementation, empty address argument is not invalid, it is needed for constructing optional fields
+    // as empty
+    /*
     @Test
     public void constructor_invalidAddress_throwsIllegalArgumentException() {
         String invalidAddress = "";
         Assert.assertThrows(IllegalArgumentException.class, () -> new Address(invalidAddress));
     }
+    */
 
     @Test
     public void isValidAddress() {
@@ -26,7 +30,6 @@ public class AddressTest {
         Assert.assertThrows(NullPointerException.class, () -> Address.isValidAddress(null));
 
         // invalid addresses
-        assertFalse(Address.isValidAddress("")); // empty string
         assertFalse(Address.isValidAddress(" ")); // spaces only
 
         // valid addresses

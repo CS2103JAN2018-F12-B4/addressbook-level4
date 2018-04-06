@@ -1,5 +1,7 @@
 package systemtests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
@@ -11,6 +13,8 @@ import static seedu.address.testutil.TypicalPersons.getTypicalPersons;
 
 import org.junit.Test;
 
+import guitests.GuiRobot;
+import javafx.scene.input.KeyCode;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
@@ -18,6 +22,8 @@ import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
 
 public class SelectCommandSystemTest extends AddressBookSystemTest {
+    private final GuiRobot guiRobot = new GuiRobot();
+
     @Test
     public void select() {
         /* ------------------------ Perform select operations on the shown unfiltered list -------------------------- */
@@ -97,6 +103,32 @@ public class SelectCommandSystemTest extends AddressBookSystemTest {
                 MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
+    //@@author jonleeyz
+    @Test
+    public void populateSelectCommandTemplate() {
+        //use accelerator
+        getCommandBox().click();
+        populateSelectCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getResultDisplay().click();
+        populateSelectCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getPersonListPanel().click();
+        populateSelectCommandUsingAccelerator();
+        assertPopulationSuccess();
+
+        getBrowserPanel().click();
+        populateSelectCommandUsingAccelerator();
+        assertPopulationFailure();
+
+        //use menu button
+        populateSelectCommandUsingMenu();
+        assertPopulationSuccess();
+    }
+    //@@author
+
     /**
      * Executes {@code command} and asserts that the,<br>
      * 1. Command box displays an empty string.<br>
@@ -126,7 +158,7 @@ public class SelectCommandSystemTest extends AddressBookSystemTest {
             assertSelectedCardChanged(expectedSelectedCardIndex);
         }
 
-        assertCommandBoxShowsDefaultStyle();
+        assertCommandBoxAndResultDisplayShowsDefaultStyle();
         assertStatusBarUnchanged();
     }
 
@@ -147,7 +179,57 @@ public class SelectCommandSystemTest extends AddressBookSystemTest {
         executeCommand(command);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertSelectedCardUnchanged();
-        assertCommandBoxShowsErrorStyle();
+        assertCommandBoxAndResultDisplayShowsErrorStyle();
         assertStatusBarUnchanged();
     }
+
+    //@@author jonleeyz
+    /**
+     * Asserts that population of the {@code CommandBox} with the AddCommand
+     * template was successful.
+     */
+    private void assertPopulationSuccess() {
+        SelectCommand selectCommand = new SelectCommand();
+        assertEquals(selectCommand.getTemplate(), getCommandBox().getInput());
+        assertEquals(selectCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+
+    /**
+     * Asserts that population of the {@code CommandBox} with the AddCommand
+     * template was unsuccessful.
+     */
+    private void assertPopulationFailure() {
+        SelectCommand selectCommand = new SelectCommand();
+        assertNotEquals(selectCommand.getTemplate(), getCommandBox().getInput());
+        assertNotEquals(selectCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the SelectCommand template
+     * using the associated accelerator in {@code MainWindow}.
+     */
+    private void populateSelectCommandUsingAccelerator() {
+        populateUsingAccelerator(KeyCode.CONTROL, KeyCode.S);
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the SelectCommand template
+     * using the menu bar in {@code MainWindow}.
+     */
+    private void populateSelectCommandUsingMenu() {
+        populateUsingMenu("Actions", "Select a Person...");
+    }
+    //@@author
 }

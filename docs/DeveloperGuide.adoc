@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= LoanSharkTycoon v1.4 - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -12,9 +12,10 @@ ifdef::env-github[]
 endif::[]
 :repoURL: https://github.com/se-edu/addressbook-level4/tree/master
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Huat Ah Finance Ptd Ltd`      Since: `Jan 2018`      Licence: `MIT`
 
 == Setting up
+
 
 === Prerequisites
 
@@ -489,6 +490,186 @@ It was important to make sure that the `find` command would search through field
 
 It was also important to be able to specify the field the user was interested in searching as this would increase the relevance of search results or reduce the occurence of irrelevant results. For example, if I searched "Baker" and there was a contact whose address was "Baker Street" and there was another contact who had been tagged as "Baker" I would receive two search results. But if I wanted to only view contacts who had been _tagged_ as "Baker", then I need only enter the specifier `-t` to increase the relevance of the results. This becomes more important as the size of the addressbook gets larger. Having more relevant results also increases the speed at which a user can use the application.
 
+
+=== Locate on Google Map
+
+The `locate` command accepts a specifier, such as `-t` or `-p` as the first argument to the program to search through a specific field. `LocateCommandParser` then recognises the specifers and constructs the correct `LocateCommand` object with the correct `Predicate<Person>`. `LocateCommand.execute()` is then called, and it searches for the keywords in the correct fields according to the Predicate that was passed to it.
+Then it gets the address of the person specified by the parameter and pass it to the method loadUrl in browerPanel in MainWindow. The user can use 'locate' / 'lo' command with a specifier as the parameter to locate a person on google map.
+
+`LocateCommand` relies on `LocateRequestEvent` which is handled by `BrowserPanel` to call the appropriate method for loading `Person` address using Google Map.
+
+The current implementation enables the user to search through all fields in a Person. If there're more than one person with the same specifier passed in by the user, it automatically locates the address of the person on top of the filteredList and ask the user to be more specific given the filtered list.
+For example, `Locate Alex` will locate the first person on the filtered list and present a message for the user to select one from the listed persons.
+
+image::locate_same_specifier.png[width="800"]
+
+Locate command is implemented this way:
+[source,java]
+----
+public LocateCommand(Predicate<Person> predicate) {
+        this.predicate = predicate;
+    }
+----
+
+With loadUrl, the Google Map url is passed to 'BrowserPanel'to display the location indicated by the index in BrowserPanel.
+
+----
+    @Override
+    public CommandResult execute() {
+            List<Person> lastShownList = model.getFilteredPersonList(predicate);
+
+            Person location = lastShownList.get(target);
+
+            // Open Google Map on BrowserPanel
+            MainWindow.loadUrl("https://www.google.com.sg/maps/place/"
+                    + location.getAddress().toString());
+
+            EventsCenter.getInstance().post(new LocateRequestEvent(target));
+
+            if (model.getFilteredPersonList().size() > 1) {
+                return new CommandResult(String.format(MESSAGE_LOCATE_SELECT, targetOne));
+            }
+            return new CommandResult(String.format(MESSAGE_LOCATE_SUCCESS, targetOne));
+
+        }
+----
+
+As we can see from the picture below, once the command is executed, the location is presented on Google Map is loaded in the BrowserPanel.
+
+image::interface_of_locate.png[width="800"]
+
+==== Rationale
+The rationale for implementing the `locate` command is that there's actual need of the users to find a person as easily as possible while using this application. By locating the person on Google Map in this application, the user can directly see the location of a person instead of a simple line of address that's not so useful.
+
+It was important to make sure that the `locate` command would use parameters other than the Index, as relevant information may be more easily to be obtained.
+
+//@@author jonleeyz
+=== Tag Colours Enhancement
+
+In the original AddressBook, all tags were of the same colour, irrespective of the `Person` they were tagged to or the content of the tag. Users were able to visually identify the tags a `Person` is associated with by the textual content of each tag. The current implementation enables colours for tags and tags with the same textual content will consistently bear the same colour. This is substantially more useful than the previous application as users are able to visually identify multiple `Person` objects with the same tag with much more ease. Also, users can now more easily compare and contrast the tags that two distinct `Person` objects are associated with.
+
+==== Basic Enhancement
+
+The colours for the tags are first created in `resources/main/view/DarkTheme.css`.
+
+The textual representations of the colours are then initialised and placed into a `String[]`.
+
+----
+private static final String[] TAG_COLOUR_STYLES =
+	{ "teal", "red", "yellow", "blue", "orange", "brown", "green", "pink", "black", "grey" };
+----
+
+A helper method is then created to return a specific tag colour style given a `String` input. The `hashcode()` method of each `String` is utilised in this method to ensure that the colour assigned is **consistently random**: equivalent `Strings` will receive identical colours while different `Strings` will receive "random" colours that will be in most cases distinct. This behaviour is consistent over repeated runs of the Application.
+
+----
+private String getTagColourStyleFor(String tagName) {
+    return TAG_COLOUR_STYLES[Math.abs(tagName.hashCode()) % TAG_COLOUR_STYLES.length];
+}
+----
+
+All that remains to be done is to implement a new method to initialise all tags of a Person object with the appropriate colours. This method calls the above helper method, utilising it to associate each tag with a appropriate colour based on its `String` content.
+
+----
+private void initTags(Person person) {
+    person.getTags().forEach(tag -> {
+        Label tagLabel = new Label(tag.tagName);
+        tagLabel.getStyleClass().add(getTagColourStyleFor(tag.tagName));
+        tagLabel.getStyleClass().add(getTagColourStyleFor(tag.tagName));
+        tags.getChildren().add(tagLabel);
+     });
+}
+----
+
+==== Further Enhancement
+
+This enhancement can be taken steps further in the coming weeks by assigning certain set colours to certain tags instead of using the `hashCode()` method to assign colours.
+
+This would be useful in the content of our Application as it is important for the User to discern between `Runners` and `Customers`, and to be able to tell at a glance whether and what actions need to be taken or assigned to respective `Customers` or `Runners`.
+
+==== Rationale
+The rationale for adding tag colours stems from two facts: firstly, that in the context of this Application, tags are used to categorise, group and distinguish between `Person` objects and that secondly, colours are an excellent way to visually and manually group and distinguish between groups of objects.
+
+As a result, implementing tag colours utilises these two facts in tandom to make it significantly easier for the User to group different `Persons` and in combination with our newly implement `find` command, which enables wide sweeping, flexible search and filtering functionality, these tag colours add much value to the searching and filtering user experience.
+
+These tag colours will be significantly more useful with the further enhancement mentioned above and hence, this basic enhancement is the first step towards the finished product.
+
+=== Keyboard shortcuts
+
+In the original AddressBook, the only keyboard shortcut that was implemented was kbd:[F1], which brought out the Help Window.
+The current implementation allows the user to use many different keyboard shortcuts to speed up common tasks.
+The new keyboard shortcuts either run their associated command immediately, or populate the `CommandBox` with the command's prefixes.
+This way, the user just needs to fill in the appropriate arguments, saving them time on typing the prefixes.
+
+==== Basic Enhancement
+
+For each of the keyboard-enabled commands, an associated menu item is created for them.
+The accelerator for each menu item is then set to its respective keyboard shortcut.
+
+The `MainWindow.fxml` file is also updated to enable the functionality and appearance of the new menu items.
+
+An event handler method is associated with each menu item, being called upon the input of the respective keyboard shortcut or upon the selection of the menu item.
+
+Each event handler will raise a new event, which will then be handled by the CommandBox and ResultDisplay UI elements.
+
+Code for `handleUndo()`:
+----
+@FXML
+    private void handleUndo() {
+        raise(new ExecuteCommandRequestEvent("undo"));
+    }
+----
+
+Upon the input of a valid keyboard shortcut, both the CommandBox and ResultDisplay UI elements handle the raised event in their own way.
+
+Both UI elements are registered as event handlers and have distinct methods to handle the two types of raised events.
+
+For `PopulatePrefixesRequestEvents`, the CommandBox replaces its current text with the given command and its prefixes.
+For `ExecuteCommandRequestEvents`, the CommandBox replaces its current text with the given command and then calls `handleCommandInputChanged()` to immediately execute the command.
+
+For `PopulatePrefixesRequestEvents`, the ResultDisplay displays the given help information for the input command.
+For `ExecuteCommandRequestEvents`, the ResultDisplay does not directly handle the event; instead the result of the keyboard shortcut input is determined by the `CommandBox` and its associated `LogicManager`.
+
+==== Further Enhancement
+
+This enhancement can be taken steps further in the coming weeks by allowing kdb:[Tab] to move between generated prefixes in the `CommandBox`.
+Ideally, the user would be able to press one keyboard shortcut to populate the CommandBox, fill in the appropriate argument for the first prefix, press kbd:[Tab] to move past the next prefix to the correct input position.
+This way, the user would be able to focus on just on the input of the salient parameters instead of worrying about the syntax of the command.
+
+Also, it would be possible to implement a confirmation dialog that could come up should the user want to make many changes at once;
+for instance, clearing the database, or tagging multiple people at once, or deleting multiple people at once.
+It is important for the application to ensure that the user does indeed want to carry out the task at hand should it result in widespread and lasting changes to the database.
+
+==== Rationale
+The rationale for implementing these keyboard shortcuts using menu items and accelerators is twofold.
+Firstly, adding the menu items to the already present menu UI element makes the application look more professional.
+Secondly, making use of accelerators allows the keyboard shortcuts to be functional even when the CommandBox is not focused.
+This is expected behaviour by the user.
+On the other hand, if the keyboard shortcuts were instead implemented at the CommandBox level, they would only be functional when the focus is on the CommandBox (eg. when the user _clicks_ on the CommandBox, not ideal).
+It would be difficult for the CommandBox to raise events and have them be handled by the ResultDisplay UI element as well, as in the current implementation, there is no interaction between the `CommandBox` and `ResultDisplay` unless a command is input.
+This would have posed problems when implementing the keyboard shortcuts that populate the CommandBox but do not run the command.
+
+Limitation: when the focus is on the BrowserPanel UI element, the implemented keyboard shortcuts do not work as a user would expect them to.
+This is a limitation of the BrowserPanel UI element.
+//@@author
+=== BrowserPanel Enhancement
+In the original AddressBook, the BrowserPanel displayed a dummy page when a Person was selected. A more useful implementation shows some more important details of the runner or customer.
+These are important fields for a loanshark manager to get a quick grasp of a customer's details, as well as who the runners are in charge of.
+
+==== Enhancement
+Depending on whether the selected Person is a Runner or Customer, the respective HTML file with the desired fields are generated.
+Upon selection of the PersonCard, or select command from the CommandBox, a HtmlWriter gathers data on the particular Person using the getter methods available in the Customer and Runner classes.
+Fields for the Customer are: name, amount owed, due date, status, and runner assigned.
+Fields for the Runner are: name, and a list of customers assigned to the specified runner.
+The BrowserPanel then displays this HTML file.
+The background and font colors are matched to the LoanSharkTycoon application.
+
+image::BrowserPanelMockup.PNG[width="800"]
+
+==== Rationale
+A customer's amount owed and due dates are very important variables which directly affect the PnL of the LoanShark's enterprise.
+Being able to view a runner's list of assigned customers is important for managing human resource.
+Therefore, this feature is suitable, and definitely desirable from the perspective of a LoanShark manager.
+
 == Documentation
 
 We use asciidoc for writing documentation.
@@ -903,27 +1084,26 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 ~Zhang Rui Qi~
 
-Major: Implementation of `Locate` command to bring up address of target on
-Google Maps.
+Major: Implementation of `Locate` command to bring up address of target on Google Maps.
 
-Minor: Addition of command aliases to improve speed of using CLI
+Minor: Addition of command aliases to improve speed of using CLI.
 
 
 ~Melvin Tan~
 
-Major: Integration with Google Calendar
+Major: Implementation of model and related components to support new subclasses, ensure basic functions work with the new model, and to enable new target user-specific functions, such as assigning customers to a runner.
 
-Minor: Enhancement to `Find` command to improve searching
+Minor: Enhancement to `Find` command to improve searching.
 
 ~Jonathan Lee~
 
-Major: Natural language processing for commands
+Major: Speed up User workflow using keyboard shortcuts and other input enhancements.
 
-Minor: UI update - colours and layout
+Minor: UI update - colours, styles and menu elements.
 
 ~Choi Wi Su~
 
-Major: Import and export function to update contacts and export information to other formats
+Major: Implement new UI option for displaying relevant information of selected persons.
 
 Minor: Addition of remarks field for each contact
 

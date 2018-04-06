@@ -15,25 +15,19 @@ public class MainMenuHandle extends NodeHandle<Node> {
         super(mainMenuNode);
     }
 
-    /**
-     * Opens the {@code HelpWindow} using the menu bar in {@code MainWindow}.
-     */
-    public void openHelpWindowUsingMenu() {
-        clickOnMenuItemsSequentially("Help", "F1");
-    }
-
-    /**
-     * Opens the {@code HelpWindow} by pressing the shortcut key associated
-     * with the menu bar in {@code MainWindow}.
-     */
-    public void openHelpWindowUsingAccelerator() {
-        guiRobot.push(KeyCode.F1);
-    }
-
+    //@@author jonleeyz
     /**
      * Clicks on {@code menuItems} in order.
      */
-    private void clickOnMenuItemsSequentially(String... menuItems) {
+    public void clickOnMenuItemsSequentially(String... menuItems) {
         Arrays.stream(menuItems).forEach(guiRobot::clickOn);
     }
+
+    /**
+     * Simulates press of given keyboard shortcut
+     */
+    public void useAccelerator(KeyCode... combination) {
+        guiRobot.push(combination);
+    }
+    //@@author
 }

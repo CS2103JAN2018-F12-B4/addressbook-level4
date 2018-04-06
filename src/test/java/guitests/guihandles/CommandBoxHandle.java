@@ -37,6 +37,18 @@ public class CommandBoxHandle extends NodeHandle<TextField> {
         return !getStyleClass().contains(CommandBox.ERROR_STYLE_CLASS);
     }
 
+    //@@author jonleeyz
+    /**
+     * Clears all text in the Command Box.
+     * @return true if the command succeeded, false otherwise.
+     */
+    public boolean clear() {
+        click();
+        guiRobot.interact(() -> getRootNode().clear());
+        return getRootNode().getText().equals("");
+    }
+    //@@author
+
     /**
      * Returns the list of style classes present in the command box.
      */

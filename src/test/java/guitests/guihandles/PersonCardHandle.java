@@ -69,6 +69,7 @@ public class PersonCardHandle extends NodeHandle<Node> {
                 .collect(Collectors.toList());
     }
 
+    //@@author jonleeyz-reused
     /**
      * Gets the style class for a given tag
      *
@@ -83,4 +84,5 @@ public class PersonCardHandle extends NodeHandle<Node> {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No such tag"));
     }
+    //@@author
 }

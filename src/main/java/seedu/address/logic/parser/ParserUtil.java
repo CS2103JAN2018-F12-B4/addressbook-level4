@@ -3,9 +3,14 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import com.joestelmach.natty.DateGroup;
+import com.joestelmach.natty.Parser;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -14,7 +19,11 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.customer.LateInterest;
+import seedu.address.model.person.customer.MoneyBorrowed;
+import seedu.address.model.person.customer.StandardInterest;
 import seedu.address.model.tag.Tag;
+
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -165,4 +174,122 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    //@@author melvintzw
+    /**
+     * Parses a {@code String date} into an {@code Date}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code date} is invalid.
+     */
+    public static Date parseDate(String date) throws IllegalValueException {
+        requireNonNull(date);
+        String trimmedDate = date.trim();
+        com.joestelmach.natty.Parser dateParser = new Parser();
+        List<DateGroup> dateGroups = dateParser.parse(trimmedDate);
+        return dateGroups.get(0).getDates().get(0);
+    }
+
+    /**
+     * Parses a {@code Optional<String> email} into an {@code Optional<Email>} if {@code email} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<Date> parseDate(Optional<String> date) throws IllegalValueException {
+        requireNonNull(date);
+        return date.isPresent() ? Optional.of(parseDate(date.get())) : Optional.empty();
+    }
+
+    //TODO: add methods to parse Customer fields and Runner fields
+
+    /**
+     * Parses a {@code string double} into an {@code MoneyOwed}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code MoneyOwed} is invalid.
+     */
+    public static MoneyBorrowed parseMoneyBorrowed(String moneyBorrowed) throws IllegalValueException {
+        requireNonNull(moneyBorrowed);
+
+        /*
+        String trimmed = moneyBorrowed.trim();
+        if (!Email.isValidEmail(trimmed)) {
+            throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
+        }
+        */
+
+        return new MoneyBorrowed(Double.parseDouble(moneyBorrowed));
+    }
+
+    /**
+     * Parses a {@code Optional<String> MoneyBorrowed} into an {@code Optional<MoneyBorrowed>} if {@code moneyBorrowed}
+     * is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<MoneyBorrowed> parseMoneyBorrowed(Optional<String> moneyBorrowed) throws
+            IllegalValueException {
+        requireNonNull(moneyBorrowed);
+        return moneyBorrowed.isPresent() ? Optional.of(parseMoneyBorrowed(moneyBorrowed.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code string double} into an {@code StandardInterest}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code MoneyOwed} is invalid.
+     */
+    public static StandardInterest parseStandardInterest(String value) throws IllegalValueException {
+        requireNonNull(value);
+
+        /*
+        String trimmed = moneyBorrowed.trim();
+        if (!Email.isValidEmail(trimmed)) {
+            throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
+        }
+        */
+
+        return new StandardInterest(Double.parseDouble(value));
+    }
+
+    /**
+     * Parses a {@code Optional<String> StandardInterest} into an {@code Optional<StandardInterest>} if {@code
+     * value} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<StandardInterest> parseStandardInterest(Optional<String> value) throws
+            IllegalValueException {
+        requireNonNull(value);
+        return value.isPresent() ? Optional.of(parseStandardInterest(value.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code string double} into an {@code StandardInterest}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code MoneyOwed} is invalid.
+     */
+    public static LateInterest parseLateInterest(String value) throws IllegalValueException {
+        requireNonNull(value);
+
+        /*
+        String trimmed = moneyBorrowed.trim();
+        if (!Email.isValidEmail(trimmed)) {
+            throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
+        }
+        */
+
+        return new LateInterest(Double.parseDouble(value));
+    }
+
+    /**
+     * Parses a {@code Optional<String> StandardInterest} into an {@code Optional<StandardInterest>} if {@code
+     * value} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<LateInterest> parseLateInterest(Optional<String> value) throws
+            IllegalValueException {
+        requireNonNull(value);
+        return value.isPresent() ? Optional.of(parseLateInterest(value.get())) : Optional.empty();
+    }
+
+
 }

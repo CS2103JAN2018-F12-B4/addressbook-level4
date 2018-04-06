@@ -30,6 +30,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
+        //@@author melvintzw
         String[] arguments = trimmedArgs.split("\\s+");
         String[] keywords;
         //check arguments[0] for specifier

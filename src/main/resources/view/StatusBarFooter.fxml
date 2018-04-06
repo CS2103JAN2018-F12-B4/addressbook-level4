@@ -3,8 +3,9 @@
 <?import org.controlsfx.control.StatusBar?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-
-<GridPane styleClass="grid-pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<!--@@author zhangriqi -->
+<GridPane styleClass="grid-pane" minHeight="10" maxHeight="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<!--@@author -->
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="100" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="100" />
