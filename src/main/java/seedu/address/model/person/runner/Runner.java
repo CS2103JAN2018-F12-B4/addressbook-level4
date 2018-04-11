@@ -56,21 +56,27 @@ public class Runner extends Person {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append("Name: ")
-                .append(getName())
+                .append(getName() + ";")
                 .append(" Phone: ")
-                .append(getPhone())
+                .append(getPhone() + ";")
                 .append(" Email: ")
-                .append(getEmail())
+                .append(getEmail() + ";")
                 .append(" Address: ")
-                .append(getAddress())
+                .append(getAddress() + ";")
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         builder.append("\n");
-        builder.append("Customers:\n");
-        for (Person customer : customers) {
-            builder.append(customer.getName());
-            builder.append(" ");
+        builder.append("Customers: ");
+        if (customers.size() > 0) {
+            builder.append(customers.get(0).getName());
+        }
+        if (customers.size() > 1) {
+            for (int i = 1; i < customers.size(); i++) {
+                builder.append(", ");
+                builder.append(customers.get(i).getName());
+            }
         }
         return builder.toString();
+
     }
 }

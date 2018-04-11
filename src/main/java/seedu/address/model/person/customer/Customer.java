@@ -1,5 +1,6 @@
 package seedu.address.model.person.customer;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -113,24 +114,29 @@ public class Customer extends Person {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append("Name: ")
-                .append(getName())
+                .append(getName() + ";")
                 .append(" Phone: ")
-                .append(getPhone())
+                .append(getPhone() + ";")
                 .append(" Email: ")
-                .append(getEmail())
+                .append(getEmail() + ";")
                 .append(" Address: ")
-                .append(getAddress())
+                .append(getAddress() + ";")
                 .append(" Tags: ");
         getTags().forEach(builder::append);
+
+        SimpleDateFormat simpledate = new SimpleDateFormat("EEE, d MMM yyyy");
+        String oweStartDate = simpledate.format(getOweStartDate());
+        String oweDueDate = simpledate.format(getOweDueDate());
+
         builder.append("\nMoney Owed: ")
-                .append(getMoneyCurrentlyOwed())
-                .append(" Standard Interest Rate: ")
-                .append(getStandardInterest())
+                .append(String.format("$%.2f", getMoneyCurrentlyOwed()))
+                .append(" Weekly Interest Rate: ")
+                .append(getStandardInterest() + "%" + ";")
                 .append(" Start Date: ")
-                .append(getOweStartDate())
+                .append(oweStartDate + ";")
                 .append(" Due Date: ")
-                .append(getOweDueDate())
-                .append("\nrunner: ")
+                .append(oweDueDate)
+                .append("\nRunner Assigned: ")
                 .append(runner.getName());
         return builder.toString();
     }

@@ -32,6 +32,7 @@ import seedu.address.model.person.runner.Runner;
 import seedu.address.model.tag.Tag;
 
 //@@author melvintzw
+
 /**
  * Parses input arguments and creates a new AddCommand object
  */
@@ -40,6 +41,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
@@ -69,13 +71,20 @@ public class AddCommandParser implements Parser<AddCommand> {
                 MoneyBorrowed moneyBorrowed = ParserUtil.parseMoneyBorrowed(argMultimap.getValue(PREFIX_MONEYOWED))
                         .orElse(new MoneyBorrowed());
                 StandardInterest standardInterest = ParserUtil.parseStandardInterest(argMultimap
-                                .getValue(PREFIX_INTEREST)).orElse(new StandardInterest());
+                        .getValue(PREFIX_INTEREST)).orElse(new StandardInterest());
 
                 Customer customer = new Customer(name, phone, email, address, tagList, moneyBorrowed,
                         oweStartDate, oweDueDate, standardInterest, new LateInterest(), new Runner());
                 return new AddCommand(customer);
 
             } else if (argMultimap.getValue(PREFIX_TYPE).get().matches("[rR]")) {
+                if (argMultimap.getValue(PREFIX_MONEYOWED).isPresent()
+                        || argMultimap.getValue(PREFIX_OWEDUEDATE).isPresent()
+                        || argMultimap.getValue(PREFIX_OWESTARTDATE).isPresent()
+                        || argMultimap.getValue(PREFIX_INTEREST).isPresent()) {
+                    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                            AddCommand.MESSAGE_INVALID_PREFIX));
+                }
                 Runner runner = new Runner(name, phone, email, address, tagList, new ArrayList<>());
                 return new AddCommand(runner);
 
