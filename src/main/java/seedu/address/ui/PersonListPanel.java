@@ -13,6 +13,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.HomeRequestEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.LocateRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
@@ -82,6 +83,16 @@ public class PersonListPanel extends UiPart<Region> {
     private void handleLocateRequestEvent(LocateRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         locate(event.target);
+    }
+    //@@author
+    //@@author jonleeyz
+    /**
+     * Handles the event where the Esc key is pressed or "home" is input to the CommandBox.
+     * {@code HomeRequestEvent}.
+     */
+    @Subscribe
+    private void handleHomeRequestEvent(HomeRequestEvent event) {
+        //@TODO to be implemented
     }
     //@@author
     /**

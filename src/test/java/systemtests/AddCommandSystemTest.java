@@ -200,17 +200,13 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         populateAddCommandUsingAccelerator();
         assertPopulationSuccess();
 
-        /**Unusual: Ctrl + Space does not work when focus is on PersonListPanel.
-         * Although most accelerators work fine when focus is on PersonListPanel,
-         * the Space key does not play nice with the PersonListPanel.
-         */
         getPersonListPanel().click();
         populateAddCommandUsingAccelerator();
-        assertPopulationFailure();
+        assertPopulationSuccess();
 
         getBrowserPanel().click();
         populateAddCommandUsingAccelerator();
-        assertPopulationFailure();
+        assertPopulationSuccess();
 
         //use menu button
         populateAddCommandUsingMenu();
@@ -308,9 +304,24 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
     }
 
     /**
-     * Asserts that population of the {@code CommandBox} with the AddCommand
-     * template was unsuccessful.
+     * Populates the {@code CommandBox} with the AddCommand template
+     * using the associated accelerator in {@code MainWindow}.
      */
+    private void populateAddCommandUsingAccelerator() {
+        populateUsingAccelerator(KeyCode.CONTROL, KeyCode.I);
+    }
+
+    /**
+     * Populates the {@code CommandBox} with the AddCommand template
+     * using the menu bar in {@code MainWindow}.
+     */
+    private void populateAddCommandUsingMenu() {
+        populateUsingMenu("Actions", "Add a Person...");
+    }
+    //@@author
+
+    //@@author jonleeyz-unused
+    /* Redundant, kept for legacy purposes
     private void assertPopulationFailure() {
         AddCommand addCommand = new AddCommand();
         assertNotEquals(addCommand.getTemplate(), getCommandBox().getInput());
@@ -322,21 +333,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
         guiRobot.pauseForHuman();
     }
-
-    /**
-     * Populates the {@code CommandBox} with the AddCommand template
-     * using the associated accelerator in {@code MainWindow}.
-     */
-    private void populateAddCommandUsingAccelerator() {
-        populateUsingAccelerator(KeyCode.CONTROL, KeyCode.SPACE);
-    }
-
-    /**
-     * Populates the {@code CommandBox} with the AddCommand template
-     * using the menu bar in {@code MainWindow}.
-     */
-    private void populateAddCommandUsingMenu() {
-        populateUsingMenu("Actions", "Add a Person...");
-    }
+    */
     //@@author
+
 }

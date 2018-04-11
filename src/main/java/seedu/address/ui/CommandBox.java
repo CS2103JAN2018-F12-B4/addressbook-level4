@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ExecuteCommandRequestEvent;
+import seedu.address.commons.events.ui.HomeRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.PopulatePrefixesRequestEvent;
 import seedu.address.logic.ListElementPointer;
@@ -138,18 +139,30 @@ public class CommandBox extends UiPart<Region> {
      */
     @Subscribe
     private void handlePopulatePrefixesRequestEvent(PopulatePrefixesRequestEvent event) {
+        commandTextField.requestFocus();
         replaceText(event.commandTemplate, event.caretIndex);
     }
 
     /**
      * Handles the event where a valid keyboard shortcut is pressed
      * to execute a command immediately
-     * {@code CommandRequestEvent}.
+     * {@code ExecuteCommandRequestEvent}.
      */
     @Subscribe
     private void handleExecuteCommandRequestEvent(ExecuteCommandRequestEvent event) {
         replaceText(event.commandWord);
         handleCommandInputChanged();
+        commandTextField.requestFocus();
+    }
+
+    /**
+     * Handles the event where the Esc key is pressed or "home" is input to the CommandBox.
+     * {@code HomeRequestEvent}.
+     */
+    @Subscribe
+    private void handleHomeRequestEvent(HomeRequestEvent event) {
+        replaceText("");
+        commandTextField.requestFocus();
     }
     //@@author
 

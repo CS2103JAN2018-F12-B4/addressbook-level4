@@ -135,7 +135,7 @@ public class DeleteCommandSystemTest extends AddressBookSystemTest {
 
         getBrowserPanel().click();
         populateDeleteCommandUsingAccelerator();
-        assertPopulationFailure();
+        assertPopulationSuccess();
 
         //use menu button
         populateDeleteCommandUsingMenu();
@@ -247,22 +247,6 @@ public class DeleteCommandSystemTest extends AddressBookSystemTest {
     }
 
     /**
-     * Asserts that population of the {@code CommandBox} with the AddCommand
-     * template was unsuccessful.
-     */
-    private void assertPopulationFailure() {
-        DeleteCommand deleteCommand = new DeleteCommand();
-        assertNotEquals(deleteCommand.getTemplate(), getCommandBox().getInput());
-        assertNotEquals(deleteCommand.getUsageMessage(), getResultDisplay().getText());
-        guiRobot.pauseForHuman();
-
-        executeCommand("invalid command");
-        assertTrue(getCommandBox().clear());
-        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
-        guiRobot.pauseForHuman();
-    }
-
-    /**
      * Populates the {@code CommandBox} with the DeleteCommand template
      * using the associated accelerator in {@code MainWindow}.
      */
@@ -277,5 +261,21 @@ public class DeleteCommandSystemTest extends AddressBookSystemTest {
     private void populateDeleteCommandUsingMenu() {
         populateUsingMenu("Actions", "Delete a Person...");
     }
+    //@@author
+
+    //@@author jonleeyz-unused
+    /* Redundant, kept for legacy purposes
+    private void assertPopulationFailure() {
+        DeleteCommand deleteCommand = new DeleteCommand();
+        assertNotEquals(deleteCommand.getTemplate(), getCommandBox().getInput());
+        assertNotEquals(deleteCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+    */
     //@@author
 }

@@ -212,7 +212,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
 
         getBrowserPanel().click();
         populateEditCommandUsingAccelerator();
-        assertPopulationFailure();
+        assertPopulationSuccess();
 
         //use menu button
         populateEditCommandUsingMenu();
@@ -330,22 +330,6 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
     }
 
     /**
-     * Asserts that population of the {@code CommandBox} with the AddCommand
-     * template was unsuccessful.
-     */
-    private void assertPopulationFailure() {
-        EditCommand editCommand = new EditCommand();
-        assertNotEquals(editCommand.getTemplate(), getCommandBox().getInput());
-        assertNotEquals(editCommand.getUsageMessage(), getResultDisplay().getText());
-        guiRobot.pauseForHuman();
-
-        executeCommand("invalid command");
-        assertTrue(getCommandBox().clear());
-        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
-        guiRobot.pauseForHuman();
-    }
-
-    /**
      * Populates the {@code CommandBox} with the EditCommand template
      * using the associated accelerator in {@code MainWindow}.
      */
@@ -360,5 +344,21 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
     private void populateEditCommandUsingMenu() {
         populateUsingMenu("Actions", "Edit a Person...");
     }
+    //@@author
+
+    //@@author jonleeyz-unused
+    /* Redundant, kept for legacy purposes
+    private void assertPopulationFailure() {
+        EditCommand editCommand = new EditCommand();
+        assertNotEquals(editCommand.getTemplate(), getCommandBox().getInput());
+        assertNotEquals(editCommand.getUsageMessage(), getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+
+        executeCommand("invalid command");
+        assertTrue(getCommandBox().clear());
+        assertEquals(MESSAGE_UNKNOWN_COMMAND, getResultDisplay().getText());
+        guiRobot.pauseForHuman();
+    }
+    */
     //@@author
 }

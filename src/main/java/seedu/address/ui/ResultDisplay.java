@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.HomeRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.PopulatePrefixesRequestEvent;
 
@@ -61,6 +62,18 @@ public class ResultDisplay extends UiPart<Region> {
         setStyleToIndicateCommandSuccess();
         Platform.runLater(() -> {
             displayed.setValue(event.commandUsageMessage);
+        });
+    }
+
+    /**
+     * Handles the event where the Esc key is pressed or "home" is input to the CommandBox.
+     * {@code HomeRequestEvent}.
+     */
+    @Subscribe
+    private void handleHomeRequestEvent(HomeRequestEvent event) {
+        setStyleToIndicateCommandSuccess();
+        Platform.runLater(() -> {
+            displayed.setValue("");
         });
     }
     //@@author
