@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.LocateRequestEvent;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
 import seedu.address.ui.MainWindow;
 
@@ -18,26 +19,27 @@ public class LocateCommand extends Command implements PopulatableCommand {
     public static final String COMMAND_ALIAS = "lo";
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Locates all persons whose fields contain any of the specified keywords "
-            + "(case-insensitive) and displays them as a list with index numbers."
+                    + "(case-insensitive) and displays them as a list with index numbers."
 
-            + "\n\t"
-            + "Refer to the User Guide (press \"F1\") for detailed information about this command!"
+                    + "\n\t"
+                    + "Refer to the User Guide (press \"F1\") for detailed information about this command!"
 
-            + "\n\t"
-            + "Parameters:\t"
-            + COMMAND_WORD + " "
-            + "[SPECIFIER] KEYWORD [MORE_KEYWORDS]..."
+                    + "\n\t"
+                    + "Parameters:\t"
+                    + COMMAND_WORD + " "
+                    + "[SPECIFIER] KEYWORD [MORE_KEYWORDS]..."
 
-            + "\n\t"
-            + "Specifiers:\t\t"
-            + "-all, -n, -p, -e, -a, -t : ALL, NAME, PHONE, EMAIL, ADDRESS and TAGS respectively."
+                    + "\n\t"
+                    + "Specifiers:\t\t"
+                    + "-all, -n, -p, -e, -a, -t : ALL, NAME, PHONE, EMAIL, ADDRESS and TAGS respectively."
 
-            + "\n\t"
-            + "Example:\t\t" + COMMAND_WORD + " -n alice bob charlie";
+                    + "\n\t"
+                    + "Example:\t\t" + COMMAND_WORD + " -n alice bob charlie";
 
     public static final String MESSAGE_LOCATE_SUCCESS = "Locate successful";
-    public static final String MESSAGE_LOCATE_SELECT = "More than one person found! "
-            + "Locate the person on top of the list by default.";
+    public static final String MESSAGE_NO_PERSON = "Locate Command unsuccessful: "
+            + "No such person with those keyword(s) found!";
+    public static final String MESSAGE_LOCATE_SELECT = "More than one person found! ";
 
     private final int target = 0;
     private final int targetOne = 1;
@@ -55,23 +57,36 @@ public class LocateCommand extends Command implements PopulatableCommand {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         List<Person> lastShownList = model.getFilteredPersonList(predicate);
 
-        Person location = lastShownList.get(target);
+        if (model.getFilteredPersonList().size() == 0) {
+            throw new CommandException(String.format(MESSAGE_NO_PERSON));
+        } else if (model.getFilteredPersonList().size() == 1) {
 
-        // Open Google Map on BrowserPanel
-        MainWindow.loadUrl("https://www.google.com.sg/maps/place/"
-                + location.getAddress().toString());
+            Person location = lastShownList.get(target);
 
-        EventsCenter.getInstance().post(new LocateRequestEvent(target));
+            // Open Google Map on BrowserPanel
+            MainWindow.loadUrl("https://www.google.com.sg/maps/place/"
+                    + location.getAddress().toString());
 
-        if (model.getFilteredPersonList().size() > 1) {
+            EventsCenter.getInstance().post(new LocateRequestEvent(target));
+
+            return new CommandResult(String.format(MESSAGE_LOCATE_SUCCESS));
+        } else {
+
+            Person location = lastShownList.get(target);
+
+            // Open Google Map on BrowserPanel
+            MainWindow.loadUrl("https://www.google.com.sg/maps/place/"
+                    + location.getAddress().toString());
+
+            EventsCenter.getInstance().post(new LocateRequestEvent(target));
             return new CommandResult(String.format(MESSAGE_LOCATE_SELECT, targetOne));
-        }
-        return new CommandResult(String.format(MESSAGE_LOCATE_SUCCESS, targetOne));
 
+        }
     }
+
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
