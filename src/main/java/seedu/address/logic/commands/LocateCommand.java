@@ -15,7 +15,7 @@ import seedu.address.ui.MainWindow;
  */
 public class LocateCommand extends Command implements PopulatableCommand {
     public static final String COMMAND_WORD = "locate";
-    public static final String COMMAND_ALIAS = "lo";
+    public static final String COMMAND_ALIAS = "l";
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Locates all persons whose fields contain any of the specified keywords "
             + "(case-insensitive) and displays them as a list with index numbers."
