@@ -66,7 +66,7 @@ public class FindCommand extends Command implements PopulatableCommand {
 
     @Override
     public String getTemplate() {
-        return COMMAND_WORD + " -";
+        return COMMAND_WORD + " ";
     }
 
     @Override

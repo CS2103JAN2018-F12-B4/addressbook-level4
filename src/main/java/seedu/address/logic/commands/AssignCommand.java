@@ -54,15 +54,15 @@ public class AssignCommand extends UndoableCommand implements PopulatableCommand
             + COMMAND_WORD + " "
             + "RUNNER-INDEX (positive integer) "
             + PREFIX_CUSTOMERS + " CUSTOMER-INDEX (positive integer) "
-            + "[ CUSTOMER-2-INDEX...]"
+            + "[ CUSTOMER-INDEX] ..."
 
             + "\n\t"
             + "Example:\t\t"
-            + COMMAND_WORD + " 5 " + PREFIX_CUSTOMERS + " 2"
+            + COMMAND_WORD + " 1 " + PREFIX_CUSTOMERS + " 2"
 
             + "\n\t"
             + "Example:\t\t"
-            + COMMAND_WORD + " 5 " + PREFIX_CUSTOMERS + " 1 2 3";
+            + COMMAND_WORD + " 1 " + PREFIX_CUSTOMERS + " 2 5 8";
 
     public static final String MESSAGE_ASSIGN_PERSON_SUCCESS = "Successfully assigned!\nUpdated Runner Info:\n%1$s";
     // message

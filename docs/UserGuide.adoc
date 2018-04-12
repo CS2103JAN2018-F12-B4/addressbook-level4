@@ -1,4 +1,4 @@
-= LoanShark Tycoon v1.4 - User Guide
+= LoanShark Tycoon v1.5rc - User Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -73,34 +73,39 @@ is specified when adding a customer.
 * Parameters can be in any order e.g. if the command specifies `n: NAME p: PHONE_NUMBER`, `p: PHONE_NUMBER n: NAME` is also acceptable.
 ====
 
-[%header,cols="1,2,8"]
+[%header,cols="1,2,7"]
 |===
 |Command
 |Keyboard shortcut
 |Syntax
 
 |help
-|kbd:[F1]
+|kbd:[F12]
 |`help`
+
+|home
+|kbd:[F1]
+|
 
 |list (`l`)
 |kbd:[F2]
 |`list`
 
 |history (`h`)
-|kbd:[Ctrl+H]
+|kbd:[F3]
 |`history`
-|exit
-|kbd:[Ctrl+Q]
-|`exit`
+
+|add (`a`)
+|kbd:[Ctrl+I]
+|`add n: NAME ty: r(or c) [p: PHONE_NUMBER] [e: EMAIL] [a: ADDRESS] [s: OWE_START_DATE] [d: OWE_DUE_DATE] [m: MONEY_OWED] [i: INTEREST_RATE] [t: TAG] ...`
+
+|assign (`as`)
+|kbd:[Ctrl+Shift+A]
+|`assign RUNNER-INDEX c: CUSTOMER-INDEX [CUSTOMER-INDEX ...]`
 
 |clear (`c`)
 |kbd:[Ctrl+Shift+C]
 |`clear`
-
-|add (`a`)
-|kbd:[Ctrl+Space]
-|`add n: NAME ty: r(or c) [p: PHONE_NUMBER] [e: EMAIL] [a: ADDRESS] [s: OWE_START_DATE] [d: OWE_DUE_DATE] [m: MONEY_OWED] [i: INTEREST_RATE] [t: TAG] ...`
 
 |delete (`d`)
 |kbd:[Ctrl+D]
@@ -117,7 +122,11 @@ is specified when adding a customer.
 |locate (`lo`)
 |kbd:[Ctrl+L]
 |`locate INDEX` +
-`locate name/email/phone/address/tags`
+`locate [SPECIFIER] KEYWORD [MORE_KEYWORDS]`
+
+|redo (`r`)
+|kbd:[Ctrl+Y]
+|`redo`
 
 |select (`s`)
 |kbd:[Ctrl+S]
@@ -127,13 +136,10 @@ is specified when adding a customer.
 |kbd:[Ctrl+Z]
 |`undo`
 
-|redo (`r`)
-|kbd:[Ctrl+Y]
-|`redo`
+|exit
+|kbd:[Alt+Q]
+|`exit`
 
-|assign (`as`)
-|kbd:[Ctrl+Shift+A]
-|`assign RUNNER-INDEX c: CUSTOMER-INDEX [CUSTOMER-INDEX ...]`
 |===
 // end::commandsummary[]
 == Feature details
@@ -181,6 +187,35 @@ _Adds a new `Runner` named "Ping An", with phone number "93698369", email addres
 address "Ang Mo Kio Police Divison HQ" and tags "undercoverrunner" and "tripleagent"._
 ====
 ***
+//@@author
+//@@author melvintzw
+=== Assigning one or more Customers to a Runner : `assign` [since v1.4]
+
+[NOTE]
+====
+* This command assigns one or more `Customers` to a `Runner` according to a specified `RUNNER-INDEX`
+and `CUSTOMER-INDICES`.
+** Each `INDEX` refers to the index number shown in the last person listing.
+** Each `INDEX` must be a *positive integer*: 1, 2, 3, ...
+* The `RUNNER-INDEX` must always be specified and at least one `CUSTOMER-INDEX` must be specified as well.
+====
+
+*Usage examples:*
+
+====
+`assign 1 c: 2`
+
+_Assigns the Customer associated with index `2` to the Runner associated with index `1` based on the last shown listing._
+====
+
+====
+`assign 1 c: 2 5 8`
+
+_Assigns the Customers associated with indices `2`, `5`, `8` to the Runner associated with index `1` based on the last shown listing._
+====
+***
+//@@author
+//@@author jonleeyz
 === Deleting a person : `delete`
 
 [NOTE]
@@ -319,6 +354,32 @@ _Locates the address "Blk 30" on Google Maps and displays the person with that a
 _Locates the person with phone number "91234567" and display his address on Google Maps._
 ====
 ***
+=== Redoing the previously undone command : `redo`
+
+*Usage examples:*
+
+====
+ delete 1
+ undo (reverses the "delete 1" command)
+ redo (reapplies the "delete 1" command)
+====
+
+====
+ delete 1
+ redo
+
+_The `redo` command fails as there are no `undo` commands executed previously._
+====
+
+====
+ delete 1
+ clear
+ undo (reverses the "clear" command)
+ undo (reverses the "delete 1" command)
+ redo (reapplies the "delete 1" command)
+ redo (reapplies the "clear" command)
+====
+***
 === Selecting and displaying details about a person : `select` [since v1.4]
 
 [NOTE]
@@ -375,60 +436,6 @@ _The `undo` command fails as there are no undoable commands executed previously.
  undo (reverses the "delete 1" command)
 ====
 ***
-=== Redoing the previously undone command : `redo`
-
-*Usage examples:*
-
-====
- delete 1
- undo (reverses the "delete 1" command)
- redo (reapplies the "delete 1" command)
-====
-
-====
- delete 1
- redo
-
-_The `redo` command fails as there are no `undo` commands executed previously._
-====
-
-====
- delete 1
- clear
- undo (reverses the "clear" command)
- undo (reverses the "delete 1" command)
- redo (reapplies the "delete 1" command)
- redo (reapplies the "clear" command)
-====
-***
-//@@author
-
-//@@author melvintzw
-=== Assigning one or more Customers to a Runner : `assign` [since v1.4]
-
-[NOTE]
-====
-* This command assigns one or more `Customers` to a `Runner` according to a specified `RUNNER-INDEX`
-and `CUSTOMER-INDICES`.
-** Each `INDEX` refers to the index number shown in the last person listing.
-** Each `INDEX` must be a *positive integer*: 1, 2, 3, ...
-* The `RUNNER-INDEX`` must always be specified and at least one `CUSTOMER-INDEX` must be specified as well.
-====
-
-[NOTE]
-====
-* RUNNER-INDEX must be provided, and at least one CUSTOMER-INDEX must be provided
-====
-*Usage examples:*
-
-====
-`assign INDEX1 c: INDEX2`
-
-_Assigns customer at `INDEX2` to Runner at `INDEX1` based on the last shown listing._
-====
-//@@author
-
-//@@author jonleeyz
 == Up and coming features [coming in v2.0]
 
 * Adding multiple persons from an input file
@@ -440,7 +447,7 @@ _Assigns customer at `INDEX2` to Runner at `INDEX1` based on the last shown list
 * Changing status of jobs for `Runners`
 * Plotting a visitation route given a set of `Customers` and displaying it in Google Maps
 * Show countdown timers for `Customers`
-* Show a summary and analytics page on application start
+* Show a detailed summary and analytics page on application start
 
 == FAQ
 

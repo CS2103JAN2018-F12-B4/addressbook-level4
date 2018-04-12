@@ -39,7 +39,7 @@ public class AddCommand extends UndoableCommand implements PopulatableCommand {
             + "[" + PREFIX_OWEDUEDATE + " OWE_DUE_DATE] "
             + "[" + PREFIX_MONEYOWED + " MONEY_OWED] "
             + "[" + PREFIX_INTEREST + " INTEREST_RATE] "
-            + "[" + PREFIX_TAG + " TAG] ... "
+            + "[" + PREFIX_TAG + " TAG] ..."
 
             + "\n\t\t"
             + "1. The start and due dates can be specified in natural language (eg. \"today\", \"this Friday\", etc)."

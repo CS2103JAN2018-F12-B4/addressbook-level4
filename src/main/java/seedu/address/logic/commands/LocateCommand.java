@@ -19,15 +19,19 @@ public class LocateCommand extends Command implements PopulatableCommand {
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Locates all persons whose fields contain any of the specified keywords "
             + "(case-insensitive) and displays them as a list with index numbers."
+
             + "\n\t"
             + "Refer to the User Guide (press \"F1\") for detailed information about this command!"
+
             + "\n\t"
             + "Parameters:\t"
             + COMMAND_WORD + " "
             + "[SPECIFIER] KEYWORD [MORE_KEYWORDS]..."
+
             + "\n\t"
             + "Specifiers:\t\t"
             + "-all, -n, -p, -e, -a, -t : ALL, NAME, PHONE, EMAIL, ADDRESS and TAGS respectively."
+
             + "\n\t"
             + "Example:\t\t" + COMMAND_WORD + " -n alice bob charlie";
 
@@ -84,7 +88,7 @@ public class LocateCommand extends Command implements PopulatableCommand {
 
     @Override
     public String getTemplate() {
-        return COMMAND_WORD + " -";
+        return COMMAND_WORD + " ";
     }
 
     @Override

@@ -19,10 +19,12 @@ public class SelectCommand extends Command implements PopulatableCommand {
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Selects the person identified by the index number used in the last person listing. "
             + "Refer to the User Guide (press \"F1\") for detailed information about this command!"
+
             + "\n\t"
             + "Parameters:\t"
             + COMMAND_WORD + " "
             + "INDEX (must be a positive integer)"
+
             + "\n\t"
             + "Example:\t\t" + COMMAND_WORD + " 1";
 

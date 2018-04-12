@@ -27,10 +27,12 @@ public class DeleteCommand extends UndoableCommand implements PopulatableCommand
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Deletes the person associated with the index number used in the last person listing. "
             + "Refer to the User Guide (press \"F1\") for detailed information about this command!"
+
             + "\n\t"
             + "Parameters:\t"
             + COMMAND_WORD + " "
             + "INDEX (must be a positive integer)"
+
             + "\n\t"
             + "Example:\t\t" + COMMAND_WORD + " 1";
 

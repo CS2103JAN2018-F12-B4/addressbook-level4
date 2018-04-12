@@ -1,4 +1,4 @@
-= LoanSharkTycoon v1.4 - Developer Guide
+= LoanShark Tycoon v1.5rc - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
