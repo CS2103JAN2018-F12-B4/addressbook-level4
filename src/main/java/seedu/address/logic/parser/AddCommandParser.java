@@ -68,13 +68,20 @@ public class AddCommandParser implements Parser<AddCommand> {
             if (argMultimap.getValue(PREFIX_TYPE).get().matches("[cC]")) {
                 Date oweStartDate = ParserUtil.parseDate(argMultimap.getValue(PREFIX_OWESTARTDATE)).orElse(new Date(0));
                 Date oweDueDate = ParserUtil.parseDate(argMultimap.getValue(PREFIX_OWEDUEDATE)).orElse(new Date(0));
+
+                if (oweDueDate.compareTo(oweStartDate) < 0) {
+                    throw new ParseException("OWE_DUE_DATE cannot be before OWE_START_DATE");
+                }
+
                 MoneyBorrowed moneyBorrowed = ParserUtil.parseMoneyBorrowed(argMultimap.getValue(PREFIX_MONEYOWED))
                         .orElse(new MoneyBorrowed());
+
                 StandardInterest standardInterest = ParserUtil.parseStandardInterest(argMultimap
                         .getValue(PREFIX_INTEREST)).orElse(new StandardInterest());
 
                 Customer customer = new Customer(name, phone, email, address, tagList, moneyBorrowed,
                         oweStartDate, oweDueDate, standardInterest, new LateInterest(), new Runner());
+
                 return new AddCommand(customer);
 
             } else if (argMultimap.getValue(PREFIX_TYPE).get().matches("[rR]")) {

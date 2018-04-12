@@ -217,7 +217,13 @@ public class ParserUtil {
         }
         */
 
-        return new MoneyBorrowed(Double.parseDouble(moneyBorrowed));
+        try {
+            return new MoneyBorrowed(Double.parseDouble(moneyBorrowed));
+        } catch (NumberFormatException nfe) {
+            throw new IllegalValueException(MoneyBorrowed.MESSAGE_MONEYBORROWED_CONSTRAINTS);
+        } catch (IllegalArgumentException iae) {
+            throw new IllegalValueException(MoneyBorrowed.MESSAGE_MONEYBORROWED_CONSTRAINTS);
+        }
     }
 
     /**
@@ -240,14 +246,15 @@ public class ParserUtil {
     public static StandardInterest parseStandardInterest(String value) throws IllegalValueException {
         requireNonNull(value);
 
-        /*
-        String trimmed = moneyBorrowed.trim();
-        if (!Email.isValidEmail(trimmed)) {
-            throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
-        }
-        */
+        value = value.trim();
 
-        return new StandardInterest(Double.parseDouble(value));
+        try {
+            return new StandardInterest(Double.parseDouble(value));
+        } catch (NumberFormatException nfe) {
+            throw new IllegalValueException(StandardInterest.MESSAGE_INTEREST_CONSTRAINTS);
+        } catch (IllegalArgumentException iae) {
+            throw new IllegalValueException(StandardInterest.MESSAGE_INTEREST_CONSTRAINTS);
+        }
     }
 
     /**
