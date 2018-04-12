@@ -31,6 +31,7 @@ public class LocateCommand extends Command implements PopulatableCommand {
             + "\n\t"
             + "Example:\t\t" + COMMAND_WORD + " -n alice bob charlie";
 
+    public static final String MESSAGE_NO_PERSON = "No one can be located!";
     public static final String MESSAGE_LOCATE_SUCCESS = "Locate successful";
     public static final String MESSAGE_LOCATE_SELECT = "More than one person found! "
             + "Locate the person on top of the list by default.";
@@ -54,19 +55,20 @@ public class LocateCommand extends Command implements PopulatableCommand {
     public CommandResult execute() {
         List<Person> lastShownList = model.getFilteredPersonList(predicate);
 
-        Person location = lastShownList.get(target);
 
-        // Open Google Map on BrowserPanel
-        MainWindow.loadUrl("https://www.google.com.sg/maps/place/"
-                + location.getAddress().toString());
+        if (model.getFilteredPersonList().size() == 0) {
+            return new CommandResult(String.format(MESSAGE_NO_PERSON));
+        } else {
+            Person location = lastShownList.get(target);
 
-        EventsCenter.getInstance().post(new LocateRequestEvent(target));
+            // Open Google Map on BrowserPanel
+            MainWindow.loadUrl("https://www.google.com.sg/maps/place/"
+                    + location.getAddress().toString());
 
-        if (model.getFilteredPersonList().size() > 1) {
+            EventsCenter.getInstance().post(new LocateRequestEvent(target));
+
             return new CommandResult(String.format(MESSAGE_LOCATE_SELECT, targetOne));
         }
-        return new CommandResult(String.format(MESSAGE_LOCATE_SUCCESS, targetOne));
-
     }
     @Override
     public boolean equals(Object other) {
