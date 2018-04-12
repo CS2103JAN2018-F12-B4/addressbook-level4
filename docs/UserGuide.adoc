@@ -198,6 +198,7 @@ and `CUSTOMER-INDICES`.
 ** Each `INDEX` refers to the index number shown in the last person listing.
 ** Each `INDEX` must be a *positive integer*: 1, 2, 3, ...
 * The `RUNNER-INDEX` must always be specified and at least one `CUSTOMER-INDEX` must be specified as well.
+
 ====
 
 *Usage examples:*
@@ -250,8 +251,9 @@ _Deletes the first person in the results of the `find` command._
 ** The `INDEX` must be a *positive integer*: 1, 2, 3, ...
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* Only fields common to both Customer and Runner can be edited
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* Only fields common to both Customer and Runner can be edited (NAME, PHONE, EMAIL, ADDRESS)
+* Functionality to edit Customer-specific fields, such as MONEY_OWED, INTEREST_RATE, etc..., will come in v2.0
+* When editing tags, the existing tags of the person will be replaced i.e adding of tags is not cumulative.
 * You can remove all the person's tags by typing `t:` without specifying any tags after it.
 ====
 
