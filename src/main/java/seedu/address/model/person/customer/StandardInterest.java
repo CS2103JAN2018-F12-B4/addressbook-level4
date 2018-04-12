@@ -35,9 +35,8 @@ public class StandardInterest {
     }
 
     /**
-     * Returns true if a given string is a valid person phone number.
+     * Returns true if a give value is zero or positive, returns false otherwise
      */
-
     public static boolean isValidInterest(double test) {
         return (!(test < 0));
     }

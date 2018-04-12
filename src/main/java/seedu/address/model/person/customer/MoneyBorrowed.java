@@ -5,17 +5,17 @@ package seedu.address.model.person.customer;
 
 //@@author melvintzw
 
+import static seedu.address.commons.util.AppUtil.checkArgument;
+
 /**
  * Represents a customer's amount of money that he/she borrowed.
  * Guarantees: immutable;
  */
 public class MoneyBorrowed {
 
-    /*
-    public static final String MESSAGE_PHONE_CONSTRAINTS =
-            "Phone numbers can only contain numbers, and should be at least 3 digits long";
-    public static final String PHONE_VALIDATION_REGEX = "\\d{3,}";
-    */
+
+    public static final String MESSAGE_MONEYBORROWED_CONSTRAINTS =
+            "MONEY_BORROWED can only contain numbers, and should not be negative";
 
     public final double value;
 
@@ -29,19 +29,16 @@ public class MoneyBorrowed {
      * @param value an amount borrowed form the loanshark
      */
     public MoneyBorrowed(double value) {
-        //checkArgument(isValidPhone(phone), MESSAGE_PHONE_CONSTRAINTS);
+        checkArgument(isValidMoneyBorrowed(value), MESSAGE_MONEYBORROWED_CONSTRAINTS);
         this.value = value;
     }
 
     /**
-     * Returns true if a given string is a valid person phone number.
+     * Returns true if a given value is zero or positive, returns false otherwise
      */
-    /*
-    public static boolean isValidPhone(String test) {
-        return test.matches(PHONE_VALIDATION_REGEX);
+    public static boolean isValidMoneyBorrowed(double test) {
+        return (!(test < 0));
     }
-    */
-
 
     @Override
     public String toString() {
