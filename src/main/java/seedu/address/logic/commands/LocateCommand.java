@@ -31,7 +31,8 @@ public class LocateCommand extends Command implements PopulatableCommand {
             + "\n\t"
             + "Example:\t\t" + COMMAND_WORD + " -n alice bob charlie";
 
-    public static final String MESSAGE_NO_PERSON = "Locate Command unsuccessful: No such person with those keyword(s) found!";
+    public static final String MESSAGE_NO_PERSON = "Locate Command unsuccessful: "
+            + "No such person with those keyword(s) found!";
     public static final String MESSAGE_LOCATE_SUCCESS = "Locate successful";
     public static final String MESSAGE_LOCATE_SELECT = "More than one person found! "
             + "Locate the person on top of the list by default.";
