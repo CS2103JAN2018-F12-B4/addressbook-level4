@@ -6,7 +6,6 @@ package seedu.address.model.person.customer;
 //@@author melvintzw
 
 import static seedu.address.commons.util.AppUtil.checkArgument;
-import static seedu.address.model.person.Phone.MESSAGE_PHONE_CONSTRAINTS;
 
 /**
  * Represents a customer's standard interest rate.
