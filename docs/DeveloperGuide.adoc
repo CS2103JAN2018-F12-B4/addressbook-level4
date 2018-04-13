@@ -1087,9 +1087,9 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Value proposition*:
 
-* Manage the operations of the loan shark syndicate substantially more efficiently and quickly than a typical mouse / GUI-driven app.
+* Manage the operations of the loan shark syndicate substantially more efficiently and quickly than a typical mouse / GUI-driven app. The Application features keyboard shortcuts and quick commands.
 * Untapped market potential.
-* Integrated with map, calendar and calculator functionality to centralise and optimise management tasks for the syndicate.
+* Integrated with map to aid in decisions to do with geographic proximity
 
 *Feature Contribution:*
 
@@ -1102,7 +1102,7 @@ Minor: Addition of command aliases to improve speed of using CLI.
 
 ~Melvin Tan~
 
-Major: Implementation of model and related components to support new subclasses, ensure basic functions work with the new model, and to enable new target user-specific functions, such as assigning customers to a runner.
+Major: Implementation of the model and all related components to enable the use of attributes and functionality related to two subclasses of Person: Customer and Runner.
 
 Minor: Enhancement to `Find` command to improve searching.
 
@@ -1110,13 +1110,13 @@ Minor: Enhancement to `Find` command to improve searching.
 
 Major: Speed up User workflow using keyboard shortcuts and other input enhancements.
 
-Minor: UI update - colours, styles and menu elements.
+Minor: Implemented usability improvements by differentiating tag colours and adding context menu elements.
 
 ~Choi Wi Su~
 
-Major: Implement new UI option for displaying relevant information of selected persons.
+Major: Implement UI element and methods for displaying summary statistics and relevant information of selected Customers or Runners.
 
-Minor: Addition of remarks field for each contact
+Minor: Recolouring of the GUI to improve look and feel
 
 
 [appendix]
@@ -1293,12 +1293,17 @@ _{ more test cases ... }_
 .. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 .. Test case: `delete 1` +
    Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+
 .. Test case: `delete 0` +
    Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
+.. Test Case: `delete 1`, where 1 is a CUSTOMER, and 1 is assigned to a RUNNER +
+    Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated. The associated Runner should no longer have that Customer assigned.
+.. Test Case: `delete 1`, where 1 is a RUNNER, and CUSTOMERS 2, 3, 4 are assigned to the RUNNER +
+    Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated. The associated Customers at INDEX 2, 3, 4 should no longer have that Runner assigned to them.
 
-_{ more test cases ... }_
+_{ fill in more test cases as development continues }_
 
 === Saving data
 
