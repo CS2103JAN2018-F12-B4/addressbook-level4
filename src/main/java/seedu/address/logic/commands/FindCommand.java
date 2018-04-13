@@ -23,7 +23,7 @@ public class FindCommand extends Command implements PopulatableCommand {
             + "\n\t"
             + "Parameters:\t"
             + COMMAND_WORD + " "
-            + "[SPECIFIER] KEYWORD [MORE_KEYWORDS]..."
+            + "[SPECIFIER] KEYWORD [KEYWORD] ..."
             + "\n\t"
             + "Specifiers:\t\t"
             + "-all, -n, -p, -e, -a, -t : ALL, NAME, PHONE, EMAIL, ADDRESS and TAGS respectively."

@@ -44,7 +44,7 @@ import seedu.address.model.tag.Tag;
 public class AssignCommand extends UndoableCommand implements PopulatableCommand {
 
     public static final String COMMAND_WORD = "assign";
-    public static final String COMMAND_ALIAS = "as";
+    public static final String COMMAND_ALIAS = "a";
 
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | assigns customers to a runner associated with the index number used in the last "

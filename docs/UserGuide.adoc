@@ -79,56 +79,55 @@ is specified when adding a customer.
 |kbd:[F12]
 |`help`
 
-|home
+|<<home, home>>
 |kbd:[F1]
 |
 
-|list
+|<<list, list>>
 |kbd:[F2]
 |`list`
 
-|history (`h`)
+|<<history, history>> (`h`)
 |kbd:[F3]
 |`history`
 
-|add (`a`)
+|<<add, add>> (`i`)
 |kbd:[Ctrl+I]
-|`add n: NAME ty: r(or c) [p: PHONE_NUMBER] [e: EMAIL] [a: ADDRESS] [s: OWE_START_DATE] [d: OWE_DUE_DATE] [m: MONEY_OWED] [i: INTEREST_RATE] [t: TAG] ...`
+|`add ty: r(or c) n: NAME [p: PHONE_NUMBER] [e: EMAIL] [a: ADDRESS] [s: OWE_START_DATE] [d: OWE_DUE_DATE] [m: MONEY_OWED] [i: INTEREST_RATE] [t: TAG] ...`
 
-|assign (`as`)
+|<<assign, assign>> (`a`)
 |kbd:[Ctrl+Shift+A]
-|`assign RUNNER-INDEX c: CUSTOMER-INDEX [CUSTOMER-INDEX ...]`
+|`assign RUNNER-INDEX c: CUSTOMER-INDEX [CUSTOMER-INDEX] ...`
 
-|clear (`c`)
+|<<clear, clear>> (`c`)
 |kbd:[Ctrl+Shift+C]
 |`clear`
 
-|delete (`d`)
+|<<delete, delete>> (`d`)
 |kbd:[Ctrl+D]
 |`delete INDEX`
 
-|edit (`e`)
+|<<edit, edit>> (`e`)
 |kbd:[Ctrl+E]
 |`edit INDEX [n: NAME] [p: PHONE_NUMBER] [e: EMAIL] [a: ADDRESS] [s: OWE_START_DATE] [d: OWE_DUE_DATE] [m: MONEY_OWED] [i: INTEREST_RATE] [t: TAG] ...`
 
-|find (`f`)
+|<<find, find>> (`f`)
 |kbd:[Ctrl+F]
-|`find [SPECIFIER] KEYWORD [MORE_KEYWORDS]`
+|`find [SPECIFIER] KEYWORD [KEYWORD] ...`
 
-|locate (`l`)
+|<<locate, locate>> (`l`)
 |kbd:[Ctrl+L]
-|`locate INDEX` +
-`locate [SPECIFIER] KEYWORD [MORE_KEYWORDS]`
+|`locate [SPECIFIER] KEYWORD [KEYWORD] ...`
 
-|redo (`r`)
+|<<redo, redo>> (`r`)
 |kbd:[Ctrl+Y]
 |`redo`
 
-|select (`s`)
+|<<select, select>> (`s`)
 |kbd:[Ctrl+S]
 |`select INDEX`
 
-|undo (`u`)
+|<<undo, undo>> (`u`)
 |kbd:[Ctrl+Z]
 |`undo`
 
@@ -140,16 +139,57 @@ is specified when adding a customer.
 // end::commandsummary[]
 == Feature details
 
-=== Showing command history : `history`
+=== Displaying the home view : kbd:[F1] [[home]]
+
+[NOTE]
+====
+* Utilising this keyboard shortcut will display the home view.
+** The CommandBox will be empty and focused (will be ready to receive input).
+** The ResultDisplay will show a welcome message.
+** The BrowserPanel will display a list of commands, as well as their respective aliases and
+keyboard shortcuts.
+====
+<<Command Summary, Back to Command Summary>>
+
+***
+=== Displaying all Runners and Customers : `list`, kbd:[F2] [[list]]
+
+*Syntax:*
+====
+ list
+====
+
+[NOTE]
+====
+* This command will display all `Runners` and `Customers` in the database.
+* The `Runners` and `Customers` will be displayed in the order they were added into the database,
+with the latest addition at the bottom.
+====
+<<Command Summary, Back to Command Summary>>
+
+***
+=== Showing command history : `history`, kbd:[F3] [[history]]
+
+*Syntax:*
+====
+ history
+====
 
 [NOTE]
 ====
 * This command will list all the commands that you have previously entered in *reverse chronological order*.
 * Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
 // tag::addcommand[]
-=== Adding a person: `add` [since v1.3]
+=== Adding a person: `add`, kbd:[Ctrl+I] [since v1.3] [[add]]
+
+*Syntax:*
+====
+ add ty: r(or c) n: NAME [p: PHONE_NUMBER] [e: EMAIL] [a: ADDRESS] [s: OWE_START_DATE] [d: OWE_DUE_DATE] [m: MONEY_OWED] [i: INTEREST_RATE] [t: TAG] ...
+====
 
 [NOTE]
 ====
@@ -164,30 +204,37 @@ is specified when adding a customer.
 *Usage examples:*
 
 ====
- add ty: c n: Xiao Ming p: 88888888 e: xiao@ming.com a: W Hotel s: today d: 5 May 2018 m: 31415926535897 i: 9.71 t: richxiaoming
+ add ty: c n: Xiao Ming p: 88888888 e: xiao@ming.com a: The Fullerton s: today d: 7 June 2018 m: 31415926535897 i: 9.71 t: richxiaoming t: HighSES t: mingdynasty
 
-_Adds a new `Customer` named "Xiao Ming", with phone number "88888888", email address "xiao@ming.com", address "W Hotel",
-and tag "richxiaoming", who borrows $31 415 926 535 897 at a weekly interest rate of 9.71% on the date this command is
-entered and is due to return the full amount on 5 May 2018._
+_Adds a new `Customer` named "Xiao Ming", with phone number "88888888", email address "xiao@ming.com", address
+"The Fullerton", and tags "richxiaoming", "HighSES" and mingdynasty", who borrows $31 415 926 535 897 at a weekly
+interest rate of 9.71% on the date this command is entered and is due to return the full amount on 7 June 2018._
 ====
 
 ====
- add ty: c  p: 88888888 n: Xiao Ming e: xiao@ming.com s: today a: W Hotel d: 5 May 2018 m: 314159265 i: 9.71 t: richxiaoming
+ add ty: c  p: 88888888 n: Xiao Ming e: xiao@ming.com s: today a: The Fullerton d: 5 May 2018 m: 314159265 i: 9.71 t: richxiaoming t: mingdynasty t: HighSES
 
 _Adds the same `Customer` as above, just with values specified in a different order._
 ====
 
 ====
- add ty: r n: Ping An p: 93698369 e: pingan@houseofahlong.com a: Ang Mo Kio Police Divison HQ t: undercoverrunner t: tripleagent
+ add ty: r n: Ping An p: 93698369 e: pingan@houseofahlong.com a: Ang Mo Kio Police Divison HQ t: UndercoverRunner t: TripleAgent t: Joker
 
 _Adds a new `Runner` named "Ping An", with phone number "93698369", email address "pingan@houseofahlong.com",
-address "Ang Mo Kio Police Divison HQ" and tags "undercoverrunner" and "tripleagent"._
+address "Ang Mo Kio Police Divison HQ" and tags "UndercoverRunner", "TripleAgent" and "Joker"._
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
 // end::addcommand[]
 //@@author
 //@@author melvintzw
-=== Assigning one or more Customers to a Runner : `assign` [since v1.4]
+=== Assigning one or more Customers to a Runner : `assign`, kbd:[Ctrl+Shift+A] [since v1.4] [[assign]]
+
+*Syntax:*
+====
+ assign RUNNER-INDEX c: CUSTOMER-INDEX [CUSTOMER-INDEX] ...
+====
 
 [NOTE]
 ====
@@ -212,10 +259,32 @@ _Assigns the Customer associated with index `2` to the Runner associated with in
 
 _Assigns the Customers associated with indices `2`, `5`, `8` to the Runner associated with index `1` based on the last shown listing._
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
 //@@author
 //@@author jonleeyz
-=== Deleting a person : `delete`
+=== Clearing the database : `clear`, kbd:[Ctrl+Shift+C] [[clear]]
+
+*Syntax:*
+====
+ clear
+====
+
+[NOTE]
+====
+* This command will clear all `Runners` and `Customers` from the database.
+* This command may be undone.
+====
+<<Command Summary, Back to Command Summary>>
+
+***
+=== Deleting a person : `delete`, kbd:[Ctrl+D] [[delete]]
+
+*Syntax:*
+====
+ delete INDEX
+====
 
 [NOTE]
 ====
@@ -239,8 +308,15 @@ _Deletes the second person in the database._
 
 _Deletes the first person in the results of the `find` command._
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
-=== Editing a person : `edit` [since v1.3]
+=== Editing a person : `edit`, kbd:[Ctrl+E] [since v1.3] [[edit]]
+
+*Syntax:*
+====
+ edit INDEX [n: NAME] [p: PHONE_NUMBER] [e: EMAIL] [a: ADDRESS] [s: OWE_START_DATE] [d: OWE_DUE_DATE] [m: MONEY_OWED] [i: INTEREST_RATE] [t: TAG] …
+====
 
 [NOTE]
 ====
@@ -267,7 +343,12 @@ _Edits the phone number and email address of the first person to be `999` and `a
 _Edits the name of the second person to be `Kimmy Aunty` and clears all existing tags._
 ====
 ***
-=== Searching for relevant persons : `find` [since v1.1]
+=== Searching for relevant persons : `find`, kbd:[Ctrl+F] [since v1.1] [[find]]
+
+*Syntax:*
+====
+ find [SPECIFIER] KEYWORD [KEYWORD] ...
+====
 
 [NOTE]
 ====
@@ -313,8 +394,15 @@ _Returns all persons with names, addresses or tags matching `Betsy`, `Tim`, or `
 
 _Returns all persons with phone number "91234567"._
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
-=== Displaying a person's address using Google Maps : `locate`
+=== Displaying a person's address using Google Maps : `locate`, kbd:[Ctrl+L] [[locate]]
+
+*Syntax:*
+====
+ locate [SPECIFIER] KEYWORD [KEYWORD] ...
+====
 
 [NOTE]
 ====
@@ -357,8 +445,15 @@ _Locates the address "Blk 30" on Google Maps and displays the person with that a
 
 _Locates any persons with phone number "91234567" and displays the address associated with the first result on Google Maps._
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
-=== Redoing the previously undone command : `redo`
+=== Redoing the previously undone command : `redo`, kbd:[Ctrl+Y] [[redo]]
+
+*Syntax:*
+====
+ redo
+====
 
 *Usage examples:*
 
@@ -383,8 +478,15 @@ _The `redo` command fails as there are no `undo` commands executed previously._
  redo (reapplies the "delete 1" command)
  redo (reapplies the "clear" command)
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
-=== Selecting and displaying details about a person : `select` [since v1.4]
+=== Selecting and displaying details about a person : `select`, kbd:[Ctrl+S] [since v1.4] [[select]]
+
+*Syntax:*
+====
+ select INDEX
+====
 
 [NOTE]
 ====
@@ -408,8 +510,15 @@ _Selects the second person in the database._
 
 _Selects the first person from the results of the `find` command._
 ====
+<<Command Summary, Back to Command Summary>>
+
 ***
-=== Undoing the last undoable command : `undo`
+=== Undoing the last undoable command : `undo`, kbd:[Ctrl+Z] [[undo]]
+
+*Syntax:*
+====
+ undo
+====
 
 [NOTE]
 ====
@@ -439,7 +548,8 @@ _The `undo` command fails as there are no undoable commands executed previously.
  undo (reverses the "clear" command)
  undo (reverses the "delete 1" command)
 ====
-***
+<<Command Summary, Back to Command Summary>>
+
 == Up and coming features [coming in v2.0]
 
 * Adding multiple persons from an input file

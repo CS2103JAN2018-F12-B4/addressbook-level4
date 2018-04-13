@@ -36,7 +36,7 @@ public class DeleteCommand extends UndoableCommand implements PopulatableCommand
             + "\n\t"
             + "Example:\t\t" + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person:\n\n%1$s";
 
     private final Index targetIndex;
 

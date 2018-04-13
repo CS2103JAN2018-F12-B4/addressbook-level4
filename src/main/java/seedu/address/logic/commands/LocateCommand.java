@@ -27,7 +27,7 @@ public class LocateCommand extends Command implements PopulatableCommand {
                     + "\n\t"
                     + "Parameters:\t"
                     + COMMAND_WORD + " "
-                    + "[SPECIFIER] KEYWORD [MORE_KEYWORDS]..."
+                    + "[SPECIFIER] KEYWORD [KEYWORD] ..."
 
                     + "\n\t"
                     + "Specifiers:\t\t"

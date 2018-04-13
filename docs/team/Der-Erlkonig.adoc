@@ -8,7 +8,7 @@
 
 == Overview
 
-HuatAh! is a Java desktop application designed for loanshark managers to manage their enterprise's operations. The user interacts with it using a CLI, and it has a GUI created with JavaFX.
+HuatAh! is a desktop loan shark manager application. It has a GUI but most of the user interactions happen using a CLI (Command Line Interface).
 
 == Summary of contributions
 
