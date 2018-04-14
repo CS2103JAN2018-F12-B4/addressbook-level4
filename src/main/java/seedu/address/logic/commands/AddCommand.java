@@ -23,6 +23,9 @@ public class AddCommand extends UndoableCommand implements PopulatableCommand {
 
     public static final String COMMAND_WORD = "add";
     public static final String COMMAND_ALIAS = "i";
+    public static final String COMMAND_TEMPLATE = COMMAND_WORD + " " + PREFIX_TYPE + "  " + PREFIX_NAME + "  "
+            + PREFIX_PHONE + "  " + PREFIX_EMAIL + "  " + PREFIX_ADDRESS + "  " + PREFIX_OWESTARTDATE + "  "
+            + PREFIX_OWEDUEDATE + "  " + PREFIX_MONEY_BORROWED + "  " + PREFIX_INTEREST + "  " + PREFIX_TAG + " ";
 
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Adds a Customer or Runner with the specified details. "
@@ -111,10 +114,7 @@ public class AddCommand extends UndoableCommand implements PopulatableCommand {
 
     @Override
     public String getTemplate() {
-        return COMMAND_WORD + " " + PREFIX_TYPE + "  " + PREFIX_NAME + "  "
-                + PREFIX_PHONE + "  " + PREFIX_EMAIL + "  " + PREFIX_ADDRESS + "  "
-                + PREFIX_OWESTARTDATE + "  " + PREFIX_OWEDUEDATE + "  "
-                + PREFIX_MONEY_BORROWED + "  " + PREFIX_INTEREST + "  " + PREFIX_TAG + " ";
+        return COMMAND_TEMPLATE;
     }
 
     @Override
