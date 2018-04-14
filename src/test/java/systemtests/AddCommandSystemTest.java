@@ -298,9 +298,8 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
      * template was successful.
      */
     private void assertPopulationSuccess() {
-        AddCommand addCommand = new AddCommand();
-        assertEquals(addCommand.getTemplate(), getCommandBox().getInput());
-        assertEquals(addCommand.getUsageMessage(), getResultDisplay().getText());
+        assertEquals(AddCommand.COMMAND_TEMPLATE, getCommandBox().getInput());
+        assertEquals(AddCommand.MESSAGE_USAGE, getResultDisplay().getText());
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof PopulatePrefixesRequestEvent);
         // assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
         guiRobot.pauseForHuman();
