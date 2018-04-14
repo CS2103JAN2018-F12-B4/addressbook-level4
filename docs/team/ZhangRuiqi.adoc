@@ -2,7 +2,7 @@
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
-== PROJECT: LoanShark Manager
+== PROJECT: HuatAh!
 
 ---
 
@@ -28,7 +28,7 @@ HuatAh! is a desktop loan shark manager application. It has a GUI but most of th
 *** Managed release `v1.4 - v1.5rc` on GitHub
 *** Collated code for 'v1.4' on Github
 ** Enhancements to existing features:
-*** Updated the GUI: removed the redundancy (Pull requests https://github.com/CS2103JAN2018-F12-B4/main/pull/76, hhttps://github.com/CS2103JAN2018-F12-B4/main/pull/6)
+*** Updated the GUI: removed the redundancy (Pull requests https://github.com/CS2103JAN2018-F12-B4/main/pull/76, https://github.com/CS2103JAN2018-F12-B4/main/pull/6)
 ** Documentation:
 *** Updated User Guide and Developer Guide to stay up to date
 ** Community:
