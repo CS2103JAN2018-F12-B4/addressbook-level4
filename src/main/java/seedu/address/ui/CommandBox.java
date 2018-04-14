@@ -141,6 +141,15 @@ public class CommandBox extends UiPart<Region> {
         commandTextField.positionCaret(newCaretPosition);
     }
 
+    /**
+     * Positions the caret after the next {@code prefix}.
+     */
+    private void moveToNextPrefix() {
+        int currentCaretPosition = commandTextField.getCaretPosition();
+        int newCaretPosition = getNextPrefixPosition(currentCaretPosition);
+        commandTextField.positionCaret(newCaretPosition);
+    }
+
     private int getPreviousPrefixPosition(int currentCaretPosition) {
         // find last prefix position
         int previousPrefixPosition = commandTextField.getText().lastIndexOf(":", currentCaretPosition);
