@@ -331,9 +331,8 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
      * template was successful.
      */
     private void assertPopulationSuccess() {
-        EditCommand editCommand = new EditCommand();
-        assertEquals(editCommand.getTemplate(), getCommandBox().getInput());
-        assertEquals(editCommand.getUsageMessage(), getResultDisplay().getText());
+        assertEquals(EditCommand.COMMAND_TEMPLATE, getCommandBox().getInput());
+        assertEquals(EditCommand.MESSAGE_USAGE, getResultDisplay().getText());
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof PopulatePrefixesRequestEvent);
         guiRobot.pauseForHuman();
 

@@ -258,9 +258,8 @@ public class FindCommandSystemTest extends AddressBookSystemTest {
      * template was successful.
      */
     private void assertPopulationSuccess() {
-        FindCommand findCommand = new FindCommand();
-        assertEquals(findCommand.getTemplate(), getCommandBox().getInput());
-        assertEquals(findCommand.getUsageMessage(), getResultDisplay().getText());
+        assertEquals(FindCommand.COMMAND_TEMPLATE, getCommandBox().getInput());
+        assertEquals(FindCommand.MESSAGE_USAGE, getResultDisplay().getText());
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof PopulatePrefixesRequestEvent);
         guiRobot.pauseForHuman();
 

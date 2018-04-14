@@ -39,13 +39,37 @@ public class CommandBoxHandle extends NodeHandle<TextField> {
 
     //@@author jonleeyz
     /**
-     * Clears all text in the Command Box.
+     * Sets text in the command box
+     */
+    public boolean setInput(String text) {
+        click();
+        guiRobot.interact(() -> getRootNode().setText(text));
+        return !getStyleClass().contains(CommandBox.ERROR_STYLE_CLASS);
+    }
+
+    /**
+     * Clears all text in the command box.
      * @return true if the command succeeded, false otherwise.
      */
     public boolean clear() {
         click();
         guiRobot.interact(() -> getRootNode().clear());
         return getRootNode().getText().equals("");
+    }
+
+    /**
+     * Gets caret position in the command box
+     */
+    public int getCaretPosition() {
+        return getRootNode().getCaretPosition();
+    }
+
+    /**
+     * Sets caret position in the command box
+     */
+    public void setCaretPosition(int index) {
+        click();
+        guiRobot.interact(() -> getRootNode().positionCaret(index));
     }
     //@@author
 

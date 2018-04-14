@@ -199,9 +199,8 @@ public class SelectCommandSystemTest extends AddressBookSystemTest {
      * template was successful.
      */
     private void assertPopulationSuccess() {
-        SelectCommand selectCommand = new SelectCommand();
-        assertEquals(selectCommand.getTemplate(), getCommandBox().getInput());
-        assertEquals(selectCommand.getUsageMessage(), getResultDisplay().getText());
+        assertEquals(SelectCommand.COMMAND_TEMPLATE, getCommandBox().getInput());
+        assertEquals(SelectCommand.MESSAGE_USAGE, getResultDisplay().getText());
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof PopulatePrefixesRequestEvent);
         guiRobot.pauseForHuman();
 

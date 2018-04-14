@@ -16,6 +16,7 @@ public class SelectCommand extends Command implements PopulatableCommand {
 
     public static final String COMMAND_WORD = "select";
     public static final String COMMAND_ALIAS = "s";
+    public static final String COMMAND_TEMPLATE = COMMAND_WORD + " ";
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Selects the person identified by the index number used in the last person listing. "
             + "Refer to the User Guide (press \"F1\") for detailed information about this command!"
@@ -73,7 +74,7 @@ public class SelectCommand extends Command implements PopulatableCommand {
 
     @Override
     public String getTemplate() {
-        return COMMAND_WORD + " ";
+        return COMMAND_TEMPLATE;
     }
 
     @Override
