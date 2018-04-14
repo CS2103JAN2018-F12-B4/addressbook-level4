@@ -48,6 +48,9 @@ public class EditCommand extends UndoableCommand implements PopulatableCommand {
 
     public static final String COMMAND_WORD = "edit";
     public static final String COMMAND_ALIAS = "e";
+    public static final String COMMAND_TEMPLATE = COMMAND_WORD + "  " + PREFIX_NAME + "  " + PREFIX_PHONE + "  "
+            + PREFIX_EMAIL + "  " + PREFIX_ADDRESS + "  " + PREFIX_OWESTARTDATE + "  " + PREFIX_OWEDUEDATE + "  "
+            + PREFIX_MONEY_BORROWED + "  " + PREFIX_INTEREST + "  " + PREFIX_TAG + " ";
 
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Edits the details of the person identified "
@@ -221,7 +224,7 @@ public class EditCommand extends UndoableCommand implements PopulatableCommand {
 
     @Override
     public String getTemplate() {
-        return COMMAND_WORD + " ";
+        return COMMAND_TEMPLATE;
     }
 
     @Override
