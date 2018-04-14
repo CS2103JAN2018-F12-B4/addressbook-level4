@@ -133,6 +133,21 @@ public class CommandBox extends UiPart<Region> {
 
     //@@author jonleeyz
     /**
+     * Removes the current {@code field} or {@code prefix}.
+     */
+    private void clearCurrentFieldOrPrefix() {
+        int currentCaretPosition = commandTextField.getCaretPosition();
+        int lastPrefixPosition = getPreviousPrefixPosition(currentCaretPosition);
+
+        // clearing the current field or prefix
+        String stringLiteralUpToPrefix = commandTextField.getText().substring(0, lastPrefixPosition);
+        String stringLiteralAfterCaret = commandTextField.getText().substring(currentCaretPosition);
+        String newCommandBoxText = stringLiteralUpToPrefix + stringLiteralAfterCaret;
+        commandTextField.setText(newCommandBoxText);
+        commandTextField.positionCaret(lastPrefixPosition);
+    }
+
+    /**
      * Positions the caret after the last {@code prefix}.
      */
     private void moveToPreviousPrefix() {
