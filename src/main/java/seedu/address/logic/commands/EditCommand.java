@@ -54,27 +54,27 @@ public class EditCommand extends UndoableCommand implements PopulatableCommand {
 
     public static final String MESSAGE_USAGE =
             COMMAND_WORD + " | Edits the details of the person identified "
-                    + "by the index number used in the last person listing."
-                    + "\n\tEditable fields are NAME, PHONE, EMAIL, ADDRESS, MONEY_BORROWED, WEEKLY_INTEREST, "
-                    + "OWE_START_DATE, "
-                    + "OWE_DUE_DATE."
-                    + "\n\t"
-                    + "Existing values will be overwritten by the input values. "
+                    + "by the index number used in the last person listing. "
                     + "Refer to the User Guide (press \"F1\") for detailed information about this command!"
 
                     + "\n\t"
                     + "Parameters:\t"
                     + COMMAND_WORD + " "
-                    + "INDEX (must be a positive integer) "
+                    + "INDEX "
                     + "[" + PREFIX_NAME + " NAME] "
                     + "[" + PREFIX_PHONE + " PHONE] "
                     + "[" + PREFIX_EMAIL + " EMAIL] "
                     + "[" + PREFIX_ADDRESS + " ADDRESS] "
-                    + "[" + PREFIX_TAG + " TAG]"
-                    + "\n\t[" + PREFIX_MONEY_BORROWED + " MONEY_BORROWED] "
+                    + "[" + PREFIX_MONEY_BORROWED + " MONEY_BORROWED] "
                     + "[" + PREFIX_INTEREST + " WEEKLY_INTEREST] "
                     + "[" + PREFIX_OWESTARTDATE + " OWE_START_DATE] "
                     + "[" + PREFIX_OWEDUEDATE + " OWE_DUE_DATE] "
+                    + "[" + PREFIX_TAG + " TAG] ..."
+
+                    + "\n\t\t"
+                    + "1. Existing values will be overwritten by the input values."
+                    + "\n"
+                    + "2. At least one of the optional fields must be provided."
 
                     + "\n\t"
                     + "Example:\t\t"
@@ -229,7 +229,7 @@ public class EditCommand extends UndoableCommand implements PopulatableCommand {
 
     @Override
     public int getCaretIndex() {
-        return getTemplate().length();
+        return (COMMAND_WORD + " ").length();
     }
 
     @Override
