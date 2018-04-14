@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
+import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -132,6 +133,142 @@ public class CommandBoxTest extends GuiUnitTest {
         assertInputHistory(KeyCode.DOWN, "");
         assertInputHistory(KeyCode.UP, thirdCommand);
     }
+
+    //@@author jonleeyz
+    @Test
+    public void handleKeyPress_tab() {
+        commandBoxHandle.setInput(AddCommand.COMMAND_TEMPLATE);
+        String testString = "";
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        // @TODO to be extended
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat("add ty: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" n: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" p: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" e: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" s: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" d: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" m: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" i: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.TAB);
+        testString = testString.concat(" t: ");
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+    }
+
+    @Test
+    public void handleKeyPress_shiftTab() {
+        commandBoxHandle.setInput(AddCommand.COMMAND_TEMPLATE);
+        commandBoxHandle.setCaretPosition(commandBoxHandle.getInput().length());
+        String testString = AddCommand.COMMAND_TEMPLATE;
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        // @TODO to be extended
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.TAB);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getCaretPosition(), testString.length());
+    }
+
+    @Test
+    public void handleKeyPress_shiftBackspace() {
+        commandBoxHandle.setInput(AddCommand.COMMAND_TEMPLATE);
+        commandBoxHandle.setCaretPosition(commandBoxHandle.getInput().length());
+        String testString = AddCommand.COMMAND_TEMPLATE;
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        // @TODO to be extended
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+
+        guiRobot.push(KeyCode.SHIFT, KeyCode.BACK_SPACE);
+        testString = testString.substring(0, testString.length() - 4);
+        assertEquals(commandBoxHandle.getInput().length(), testString.length());
+    }
+    //@@author
 
     //@@author jonleeyz-reused
     /**
