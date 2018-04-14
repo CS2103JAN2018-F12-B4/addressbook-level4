@@ -60,6 +60,19 @@ public class CommandBox extends UiPart<Region> {
             keyEvent.consume();
             navigateToNextInput();
             break;
+        case TAB:
+            keyEvent.consume();
+            if (keyEvent.isShiftDown()) {
+                moveToPreviousPrefix();
+            } else {
+                moveToNextPrefix();
+            }
+            break;
+        case BACK_SPACE:
+            if (keyEvent.isShiftDown()) {
+                keyEvent.consume();
+                clearCurrentFieldOrPrefix();
+            }
         default:
             // let JavaFx handle the keypress
         }
