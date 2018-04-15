@@ -104,7 +104,8 @@
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
     -fx-padding: 0 0 0 0;
-    -fx-border-color: -borders-colour;
+    -fx-background-color: derive(-main-colour, 0%);
+    /*-fx-border-color: -borders-colour;*/
 }
 
 /*
@@ -336,6 +337,7 @@
 #cardPane {
     -fx-background-color: transparent;
     -fx-border-width: 1;
+    -fx-border-color: -borders-colour;
 }
 
 #commandTypeLabel {

@@ -18,6 +18,7 @@ import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.LocateRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.customer.Customer;
 
 /**
  * Panel containing the list of persons.
@@ -103,13 +104,30 @@ public class PersonListPanel extends UiPart<Region> {
         @Override
         protected void updateItem(PersonCard person, boolean empty) {
             super.updateItem(person, empty);
-
+            //@@author melvintzw
             if (empty || person == null) {
                 setGraphic(null);
                 setText(null);
+                setStyle("    -fx-label-padding: 0 0 0 0;"
+                        + "    -fx-graphic-text-gap : 0;"
+                        + "    -fx-padding: 0 0 0 0;"
+                        + "    -fx-background-color: derive(-main-colour, 0%);");
             } else {
-                setGraphic(person.getRoot());
+                if (person.person instanceof Customer) {
+                    setGraphic(person.getRoot());
+                    setStyle("    -fx-label-padding: 0 0 0 0;"
+                            + "    -fx-graphic-text-gap : 0;"
+                            + "    -fx-padding: 0 0 0 0;"
+                            + "    -fx-background-color: derive(-main-colour, 0%);");
+                } else {
+                    setGraphic(person.getRoot());
+                    setStyle("    -fx-label-padding: 0 0 0 0;"
+                            + "    -fx-graphic-text-gap : 0;"
+                            + "    -fx-padding: 0 0 0 0;"
+                            + "    -fx-background-color: derive(-main-colour, 50%);");
+                }
             }
+            //@@author
         }
     }
 

@@ -54,30 +54,6 @@ public class PersonCard extends UiPart<Region> {
         email.setText(person.getEmail().value);
         personType.setText(person.getType().name());
         initTags(person);
-
-        //@@author melvintzw
-        if (this.person.getType() == Person.PersonType.CUSTOMER) {
-            cardPane.setStyle("    -fx-label-padding: 0 0 0 0;"
-                    + "    -fx-graphic-text-gap : 0;"
-                    + "    -fx-padding: 0 0 0 0;"
-                    + "    -fx-background-color: derive(-main-colour, 0%);");
-
-        } else {
-            cardPane.setStyle("    -fx-label-padding: 0 0 0 0;"
-                    + "    -fx-graphic-text-gap : 0;"
-                    + "    -fx-padding: 0 0 0 0;"
-                    + "    -fx-background-color: derive(-main-colour, 50%);");
-        }
-        //@@author
-
-        /*
-        if (this.person.getType() == Person.PersonType.CUSTOMER) {
-            cardPane.getStyleClass().add("customerCard");
-
-        } else {
-            cardPane.getStyleClass().add("runnerCard");
-        }
-        */
     }
 
     //@@author jonleeyz-reused
